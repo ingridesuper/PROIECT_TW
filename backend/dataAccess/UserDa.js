@@ -1,5 +1,6 @@
 import User from "../entities/User.js";
 import Subject from "../entities/Subject.js";
+import LikeOp from "./Operators.js"
 
 async function getUsers(){
     //return await User.findAll({include: ["Subjects"]})
@@ -26,8 +27,32 @@ async function createUser(user){
     return await User.create(user);
 }
 
+//filtrare si paginare
+async function getUserWithFilterAndPagination(filter){
+  
+    if (!filter.take)
+      filter.take = 10; //primele 10
+
+    if (!filter.skip)
+      filter.skip = 1; //pe prima pagina
+
+    let whereClause = {};
+    if (filter.userEmail)
+        whereClause.UserEmail = {[LikeOp]: `%${filter.userEmail}%`};
+  
+  
+    return await User.findAndCountAll (
+      {   
+        distinct: true,         
+        where: whereClause,
+        limit: parseInt(filter.take),
+        offset: parseInt(filter.skip - 1) * parseInt(filter.take)
+      });
+  }
+
 export {
     getUsers,
     getUserById,
-    createUser
+    createUser,
+    getUserWithFilterAndPagination
 }
