@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import env from "dotenv";
 import DB_Init from "./entities/DB_init.js"
+import createDbRouter from './routes/createDbRoute.js';
+import userRouter from './routes/UserRouter.js';
 
 env.config()
 
@@ -13,11 +15,11 @@ app.use(express.urlencoded({
     extended: true
 }))
 
-DB_Init()
+DB_Init();
 
-app.use(express.static('public'));
 app.use(cors());
-app.use("/api", router);
+app.use("/api", createDbRouter);
+app.use("/api", userRouter);
 
 let port = process.env.PORT || 8001;
 app.listen(port);

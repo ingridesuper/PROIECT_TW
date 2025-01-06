@@ -1,5 +1,8 @@
 import mysql from "mysql2/promise";
 import env from "dotenv";
+import User from "./User.js";
+import Subject from "./Subject.js";
+import UserSubject from "./UserSubject.js";
 
 env.config();
 
@@ -22,8 +25,14 @@ function Create_DB(){
     })
 }
 
+function FK_Config(){
+    User.belongsToMany(Subject, {through: "UserSubject", as: "Subjects", foreignKey: "UserId"});
+    Subject.belongsToMany(User, {through: "UserSubject", as: "Users", foreignKey: "SubjectId"});
+}
+
 function DB_Init(){
     Create_DB();
+    FK_Config();
 }
 
 export default DB_Init;
