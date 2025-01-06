@@ -5,6 +5,7 @@ import DB_Init from "./entities/DB_init.js"
 import createDbRouter from './routes/createDbRoute.js';
 import userRouter from './routes/UserRouter.js';
 import subjectRouter from './routes/SubjectRouter.js';
+import userSubjectRouter from './routes/UserSubjectRouter.js';
 
 env.config()
 
@@ -22,6 +23,7 @@ app.use(cors());
 app.use("/api", createDbRouter);
 app.use("/api", userRouter);
 app.use("/api", subjectRouter);
+app.use("/api", userSubjectRouter);
 
 let port = process.env.PORT || 8001;
 app.listen(port);
