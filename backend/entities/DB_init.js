@@ -3,6 +3,8 @@ import env from "dotenv";
 import User from "./User.js";
 import Subject from "./Subject.js";
 import UserSubject from "./UserSubject.js";
+import Note from "./Note.js";
+import Tag from "./Tag.js";
 
 env.config();
 
@@ -28,6 +30,14 @@ function Create_DB(){
 function FK_Config(){
     User.belongsToMany(Subject, {through: "UserSubject", as: "Subjects", foreignKey: "UserId"});
     Subject.belongsToMany(User, {through: "UserSubject", as: "Users", foreignKey: "SubjectId"});
+
+    UserSubject.hasMany(Note, {as:"UserNotes", foreignKey:"UserId"})
+    UserSubject.hasMany(Note, {as:"SubjectNotes", foreignKey:"SubjectId"})
+    Note.belongsTo(User, {foreignKey: "UserId"})
+    Note.belongsTo(Subject, {foreignKey: "SubjectId"})
+
+    Tag.hasMany(Note, {as:"NotesWithTag", foreignKey:"TagId"})
+    Note.belongsTo(Tag, {foreignKey:"TagId"})
 }
 
 function DB_Init(){
