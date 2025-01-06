@@ -1,5 +1,5 @@
 import express from "express";
-import {getSubjects, getSubjectById, createSubject, updateSubject, deleteSubject} from "../dataAccess/SubjectDa.js";
+import {getSubjects, getSubjectById, createSubject, updateSubject, deleteSubject, getSubjectWithFilterAndPagination} from "../dataAccess/SubjectDa.js";
 
 let subjectRouter=express.Router();
 
@@ -34,5 +34,10 @@ subjectRouter.route("/subject/:id").delete(async (req, res) => {
     await deleteSubject(req.params.id);
     return res.status(204).send();
 });
+
+//filtrare si paginare
+subjectRouter.route("/subjectFilter").get(async (req, res)=>{
+    return res.json(await getSubjectWithFilterAndPagination(req.query)); 
+})
 
 export default subjectRouter;
