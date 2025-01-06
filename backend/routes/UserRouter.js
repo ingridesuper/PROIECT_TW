@@ -4,7 +4,12 @@ import {getUsers, getUserById, createUser} from "../dataAccess/UserDa.js";
 let userRouter=express.Router();
 
 userRouter.route("/user").post(async (req, res)=>{
-    return res.status(201).json(await createUser(req.body));
+    try {
+        const user = await createUser(req.body);
+        return res.status(201).json(user);
+    } catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
 })
 
 

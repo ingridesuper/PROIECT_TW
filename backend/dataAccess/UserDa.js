@@ -12,8 +12,18 @@ async function getUserById(id){
 }
 
 async function createUser(user){
-    //adauga validare aici
-    return await User.create(user)
+    // validare mail institutional
+    if (!user.UserEmail || !user.UserEmail.endsWith("@stud.ase.ro")) {
+        throw new Error("Email-ul trebuie să fie un cont instituțional (@stud.ase.ro)");
+    }
+
+    // validare unicitate
+    const existingUser = await User.findOne({ where: { UserEmail: user.UserEmail } });
+    if (existingUser) {
+        throw new Error("Email-ul este deja utilizat.");
+    }
+
+    return await User.create(user);
 }
 
 export {
