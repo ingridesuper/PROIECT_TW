@@ -9,17 +9,12 @@ const Note=db.define("Note", {
         allowNull:false
     },
 
-    UserId: {
+    UserSubjectId: {
         type: Sequelize.INTEGER,
         allowNull: false
     },
 
-    SubjectId: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
-
-    Title: {
+    Title:{
         type: Sequelize.STRING,
         allowNull: false
     },
@@ -28,6 +23,8 @@ const Note=db.define("Note", {
         type: Sequelize.TEXT, //TEXT - pt strings mai mari
         allowNull: true
     },
+
+    //aici tb sa se poate schimba doarupdatedAt dupa creare -> vezi cum
 
     CreatedAt: {
         type: Sequelize.DATE,

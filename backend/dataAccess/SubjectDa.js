@@ -1,4 +1,3 @@
-import User from "../entities/User.js";
 import Subject from "../entities/Subject.js";
 import LikeOp from "./Operators.js"
 
@@ -61,7 +60,7 @@ async function getSubjectWithFilterAndPagination(filter){
         limit: parseInt(filter.take),
         offset: parseInt(filter.skip - 1) * parseInt(filter.take)
       });
-  }
+}
 
 export {
     getSubjects, getSubjectById, createSubject, updateSubject, deleteSubject, getSubjectWithFilterAndPagination

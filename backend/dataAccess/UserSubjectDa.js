@@ -7,6 +7,10 @@ async function getUserSubjects() {
     return await UserSubject.findAll();
 }
 
+async function getUserSubject(id) {
+    return await UserSubject.findByPk(id);
+}
+
 //inroleaza un user la o materie
 async function addUserToSubject(userId, subjectId) {
     // verificam daca utilizatorul exista
@@ -45,14 +49,12 @@ async function getUsersBySubject(subjectId) {
 }
 
 // dez-inroleaza un user de la o materie
-async function removeUserFromSubject(userId, subjectId) {
-    const relation = await UserSubject.findOne({
-        where: { UserId: userId, SubjectId: subjectId }
-    });
-    if (!relation) {
-        throw new Error("Acest utilizator nu este inrolat acestei materii.");
+async function removeUserFromSubject(userSubjectId) {
+    const user = await UserSubject.findByPk(userSubjectId); 
+    if (!user) {
+        throw new Error("Acest UserSubjectId nu există.");
     }
-    await relation.destroy();
+    await user.destroy();
 }
 
-export { getUserSubjects, addUserToSubject, getSubjectsByUser, getUsersBySubject, removeUserFromSubject };
+export { getUserSubjects, addUserToSubject, getSubjectsByUser, getUsersBySubject, removeUserFromSubject, getUserSubject };

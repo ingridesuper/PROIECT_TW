@@ -1,5 +1,5 @@
 import express from "express";
-import {getUserSubjects, addUserToSubject, getSubjectsByUser, getUsersBySubject, removeUserFromSubject} from "../dataAccess/UserSubjectDa.js"
+import { getUserSubjects, addUserToSubject, getSubjectsByUser, getUsersBySubject, removeUserFromSubject, getUserSubject } from "../dataAccess/UserSubjectDa.js"
 
 let userSubjectRouter=express.Router();
 
@@ -19,6 +19,11 @@ userSubjectRouter.route("/userSubject").get(async (req, res)=>{
     return res.json(await getUserSubjects())
 })
 
+//get by id
+userSubjectRouter.route("/userSubject/:id").get(async (req, res)=>{
+    return res.json(await getUserSubject(req.params.id));
+})
+
 //get subjects of user
 userSubjectRouter.route("/userSubject/user/:id").get(async (req, res)=>{
     return res.json(await getSubjectsByUser(req.params.id))
@@ -30,10 +35,11 @@ userSubjectRouter.route("/userSubject/subject/:id").get(async (req, res)=>{
 })
 
 //unenroll
-userSubjectRouter.route("/userSubject/remove").delete(async (req, res) => {
+
+userSubjectRouter.route("/userSubject/:id").delete(async (req, res) => {
     try {
-        const { UserId, SubjectId } = req.body;
-        await removeUserFromSubject(UserId, SubjectId);
+        const userSubjectId = req.params.id;
+        await removeUserFromSubject(userSubjectId);
         return res.status(200).json({ message: "Utilizatorul a fost dez-inrolat cu succes de la materie." });
     } catch (error) {
         return res.status(400).json({ error: error.message });

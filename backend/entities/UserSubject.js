@@ -1,20 +1,30 @@
 import db from "../dbConfig.js";
-import {Sequelize} from "sequelize";
+import { Sequelize } from "sequelize";
 
-const UserSubject=db.define("UserSubject", {
-    SubjectId: {
-        type: Sequelize.INTEGER,
-        primaryKey:true,
-        autoIncrement:false,
-        allowNull:false
-    },
+const UserSubject = db.define("UserSubject", {
+  UserSubjectId: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,      
+    autoIncrement: true, 
+    allowNull: false       
+  },
 
-    UserId: {
-        type: Sequelize.INTEGER,
-        primaryKey:true,
-        autoIncrement:false,
-        allowNull:false
+  SubjectId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+
+  UserId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  }
+}, {
+  indexes: [
+    {
+      unique: true, // combinatia UserId, SubjectId - unică
+      fields: ['UserId', 'SubjectId']
     }
-})
+  ]
+});
 
-export default UserSubject
+export default UserSubject;

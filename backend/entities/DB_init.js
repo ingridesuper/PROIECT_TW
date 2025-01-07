@@ -5,6 +5,8 @@ import Subject from "./Subject.js";
 import UserSubject from "./UserSubject.js";
 import Note from "./Note.js";
 import Tag from "./Tag.js";
+import db from "../dbConfig.js";
+
 
 env.config();
 
@@ -31,16 +33,29 @@ function FK_Config(){
     User.belongsToMany(Subject, {through: "UserSubject", as: "Subjects", foreignKey: "UserId"});
     Subject.belongsToMany(User, {through: "UserSubject", as: "Users", foreignKey: "SubjectId"});
 
-    UserSubject.hasMany(Note, {as:"UserNotes", foreignKey:"UserId"})
-    UserSubject.hasMany(Note, {as:"SubjectNotes", foreignKey:"SubjectId"})
-    Note.belongsTo(User, {foreignKey: "UserId"})
-    Note.belongsTo(Subject, {foreignKey: "SubjectId"})
+    UserSubject.hasMany(Note, {as:"UserSubjectNotes", foreignKey:"UserSubjectId"})
+    Note.belongsTo(UserSubject, {foreignKey: "UserSubjectId"})
 
     Tag.hasMany(Note, {as:"NotesWithTag", foreignKey:"TagId"})
     Note.belongsTo(Tag, {foreignKey:"TagId"})
 }
 
-function DB_Init(){
+//pt adaugare tabele noi
+// async function DB_Init() {
+//     Create_DB();
+//     FK_Config();
+    
+//     // Sync all models and tables
+//     try {
+//         await db.sync({ force: true });  // This will drop and recreate tables every time the app starts
+//         console.log("Database tables created successfully.");
+//     } catch (error) {
+//         console.warn("Error while syncing the database:", error.stack);
+//     }
+// }
+
+
+function DB_Init() {
     Create_DB();
     FK_Config();
 }
