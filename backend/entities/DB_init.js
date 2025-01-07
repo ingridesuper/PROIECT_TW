@@ -6,6 +6,8 @@ import UserSubject from "./UserSubject.js";
 import Note from "./Note.js";
 import Tag from "./Tag.js";
 import db from "../dbConfig.js";
+import StudyGroup from "./StudyGroup.js";
+import UserStudyGroup from "./UserStudyGroup.js";
 
 
 env.config();
@@ -38,6 +40,9 @@ function FK_Config(){
 
     Tag.hasMany(Note, {as:"NotesWithTag", foreignKey:"TagId"})
     Note.belongsTo(Tag, {foreignKey:"TagId"})
+
+    User.belongsToMany(StudyGroup, {through: "UserStudyGroup", as:"StudyGroups", foreignKey: "UserId"});
+    StudyGroup.belongsToMany(User, {through: "UserStudyGroup", as:"Users", foreignKey: "StudyGroupId"});
 }
 
 //pt adaugare tabele noi
@@ -45,7 +50,6 @@ function FK_Config(){
 //     Create_DB();
 //     FK_Config();
     
-//     // Sync all models and tables
 //     try {
 //         await db.sync({ force: true });  // This will drop and recreate tables every time the app starts
 //         console.log("Database tables created successfully.");

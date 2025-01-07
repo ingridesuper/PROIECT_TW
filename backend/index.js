@@ -8,6 +8,8 @@ import subjectRouter from './routes/SubjectRouter.js';
 import userSubjectRouter from './routes/UserSubjectRouter.js';
 import noteRouter from './routes/NoteRouter.js';
 import tagRouter from './routes/TagRouter.js';
+import studyGroupRouter from './routes/StudyGroupRouter.js';
+import userStudyGroupRouter from './routes/UserStudyGroupRouter.js';
 
 
 env.config()
@@ -29,6 +31,8 @@ app.use("/api", subjectRouter);
 app.use("/api", userSubjectRouter);
 app.use("/api", noteRouter);
 app.use("/api", tagRouter);
+app.use("/api", studyGroupRouter);
+app.use("/api", userStudyGroupRouter);
 
 let port = process.env.PORT || 8001;
 app.listen(port);

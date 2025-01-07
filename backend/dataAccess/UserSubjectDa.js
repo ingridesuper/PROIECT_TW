@@ -2,6 +2,8 @@ import UserSubject from "../entities/UserSubject.js";
 import User from "../entities/User.js";
 import Subject from "../entities/Subject.js"; 
 
+//de schimbat si adaugat fct pt sub pe user sau user la subject la filter and pag
+
 //toate relatiile user-subject
 async function getUserSubjects() {
     return await UserSubject.findAll();
