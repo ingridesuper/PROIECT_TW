@@ -1,0 +1,5 @@
+PT EMAIL LOGIN
+https://www.youtube.com/watch?v=Q0a0594tOrc
+
+//4 dependencies:
+npm install --save express express-session passport passport-google-oauth2

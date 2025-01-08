@@ -30,9 +30,13 @@ app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.get('/', (req, res)=>{
+    res.send('<a href="/auth/google">Autentificare prin Google</a>')
+})
+
 //ruta autentificare
 app.get('/auth/google', passport.authenticate('google', {
-    scope: ['email', 'profile']
+    scope: ['email']
 }));
 
 //callback autentificare

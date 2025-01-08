@@ -12,6 +12,12 @@ async function getUserById(id){
     return await User.findByPk(id)
 }
 
+//am adaugat asta pt autentificare
+async function getUserByEmail(email) {
+  return await User.findOne({where: {UserEmail: email}});
+}
+
+
 async function createUser(user){
     // validare mail institutional
     if (!user.UserEmail || !user.UserEmail.endsWith("@stud.ase.ro")) {
@@ -54,5 +60,6 @@ export {
     getUsers,
     getUserById,
     createUser,
-    getUserWithFilterAndPagination
+    getUserWithFilterAndPagination,
+    getUserByEmail
 }
