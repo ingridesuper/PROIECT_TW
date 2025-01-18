@@ -1,6 +1,5 @@
-import logo from './logo.svg';
-import './App.css';
 import {Routes, Route, Link} from "react-router-dom";
+import React, { useState, useEffect } from 'react';
 import Home from './pages/Home';
 import Notes from './pages/notes/Notes';
 import NewNote from './pages/notes/NewNote';
@@ -12,8 +11,31 @@ import "./styles/styles.css"
 import penIcon from "./media/pen.svg"
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser]=useState(null);
+
+  useEffect(() => {
+    fetch('/api/auth/status', {
+      method: 'GET',
+      credentials: 'include', // pentru a trimite cookies cu cererea
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.isAuthenticated) {
+          setIsAuthenticated(true);
+          setUser(data.user); // salvam utilizatorul
+
+        } else {
+          setIsAuthenticated(false);
+        }
+      })
+      .catch(error => {
+        console.error('Eroare la verificarea autentificării:', error);
+      });
+  }, []);
+
   return (
-    <div className="App">
+    <>
 
       <div id="logoContainer">
         <img id="penIcon" src={penIcon} alt="Pen icon" />
@@ -34,26 +56,25 @@ function App() {
 
 
       <Routes>
-        <Route path="/" element={<Home></Home>}></Route>
-        <Route path="/notes" element={<Notes></Notes>}></Route>
-        <Route path="/notes/new" element={<NewNote></NewNote>}></Route>
+        <Route path="/" element={<Home isAuthenticated={isAuthenticated} />}></Route>
+        <Route path="/notes" element={isAuthenticated ? <Notes /> : <Home></Home>} />
+        <Route path="/notes/new" element={isAuthenticated ? <NewNote /> : <Home></Home>}></Route>
 
         {/* id care poate fi folosit -> edit */}
         {/* asta e var 1 - route params; 
         (var 2 - outlet si context) 
         var 3 - parameters cu state? idk vezi la notes*/}
         {/* putem trimite cate routes parameters vrem */}
-        <Route path="/notes/:id" element={<EditNote></EditNote>}></Route>
 
 
-        <Route path="/studygroups" element={<StudyGroups></StudyGroups>}></Route>
+        <Route path="/studygroups" element={isAuthenticated ? <StudyGroups /> : <Home></Home>}></Route>
 
 
-        <Route path="/subjects" element={<Subjects></Subjects>}></Route>
+        <Route path="/subjects" element={isAuthenticated ? <Subjects /> : <Home></Home>}></Route>
 
         <Route path="*" element={<NotFound></NotFound>}></Route>
       </Routes>
-    </div>
+    </>
   );
 }
 

@@ -12,6 +12,7 @@ import userStudyGroupRouter from './routes/UserStudyGroupRouter.js';
 
 import passport from 'passport';
 import session from 'express-session';
+import cors from 'cors';
 import './auth.js'
 
 env.config()
@@ -19,14 +20,25 @@ env.config()
 let app = express();
 
 app.use(express.json()); 
+app.use(cors())
 app.use(express.urlencoded({ 
     extended: true
 }))
 
+
 DB_Init();
 
 //configurare sesiune si pasaport
-app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+app.use(session({
+    secret: 'cats', // Replace with a secure secret
+    resave: false, // Prevents session from being saved on every request
+    saveUninitialized: false, // Saves only if a session is modified
+    cookie: {
+      secure: false, // Set true if using HTTPS
+      maxAge: 1000 * 60, // 1 minute session expiration
+    }
+  }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -42,7 +54,7 @@ app.get('/auth/google', passport.authenticate('google', {
 //callback autentificare
 app.get('/google/callback', 
     passport.authenticate('google', {
-        successRedirect: '/protected',  // redirectioneaza utilizatorul dupa autentificare
+        successRedirect: 'http://localhost:3000',  // redirectioneaza utilizatorul dupa autentificare
         failureRedirect: '/auth/failure' // redirectioneaza in caz de esec
     })
 );
@@ -64,6 +76,25 @@ app.get('/auth/failure', (req, res) => {
 function isLoggedIn(req, res, next){
     req.user? next() : res.sendStatus(401)
 }
+
+// endpoint pentru a verifica statusul autentificării
+app.get('/api/auth/status', (req, res) => {
+    if (req.isAuthenticated()) {
+      res.json({ isAuthenticated: true, user: req.user });
+    } else {
+      res.json({ isAuthenticated: false });
+    }
+  });
+
+  //destroys the session
+  app.get('/api/auth/logout', (req, res) => {
+    req.logout(err => {
+      if (err) { return next(err); }
+      req.session.destroy(); // Destroy session
+    });
+  });
+  
+  
 
 app.use("/api", isLoggedIn, createDbRouter);
 app.use("/api", isLoggedIn, userRouter);
