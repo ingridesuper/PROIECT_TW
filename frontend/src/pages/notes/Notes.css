@@ -1,0 +1,12 @@
+.notes-container {
+    font-family: Arial, sans-serif;
+    margin: 20px 40px;
+  }
+  
+  .note-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+  

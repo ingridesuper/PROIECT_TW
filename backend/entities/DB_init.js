@@ -22,6 +22,7 @@ function Create_DB(){
     .then((connection) => {
     conn = connection
     return connection.query('CREATE DATABASE IF NOT EXISTS NotesAppDatabase')
+    
     })
     .then(() => {
     return conn.end()
@@ -29,6 +30,7 @@ function Create_DB(){
     .catch((err) => {
     console.warn(err.stack)
     })
+    
 }
 
 function FK_Config(){
