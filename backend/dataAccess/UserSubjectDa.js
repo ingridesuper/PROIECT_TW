@@ -13,6 +13,16 @@ async function getUserSubject(id) {
     return await UserSubject.findByPk(id);
 }
 
+//usersubject with user and subject
+async function getUserSubjectByUserAndSubject(userId, subjectId) {
+    return await UserSubject.findOne({
+        where: {
+            UserId: userId,
+            SubjectId: subjectId
+        }
+    });
+}
+
 //inroleaza un user la o materie
 async function addUserToSubject(userId, subjectId) {
     // verificam daca utilizatorul exista
@@ -59,4 +69,4 @@ async function removeUserFromSubject(userSubjectId) {
     await user.destroy();
 }
 
-export { getUserSubjects, addUserToSubject, getUserSubjectsByUser, getUsersBySubject, removeUserFromSubject, getUserSubject };
+export { getUserSubjects, addUserToSubject, getUserSubjectsByUser, getUsersBySubject, removeUserFromSubject, getUserSubject, getUserSubjectByUserAndSubject };

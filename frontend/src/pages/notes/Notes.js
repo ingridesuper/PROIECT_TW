@@ -21,7 +21,7 @@ export default function Notes({ user }) {
   return (
     <>
       {/* adaugare notita noua */}
-      <Link to="./new">
+      <Link to="./new" user={user}>
         <button className="fab">+</button>
       </Link>
 

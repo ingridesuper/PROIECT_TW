@@ -1,11 +1,36 @@
-import React, { useState } from "react";
-import "./NewNote.css"
+import React, { useState, useEffect } from "react";
+import "./NewNote.css";
 
-export default function NewNote() {
+export default function NewNote({ user }) {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [userSubjectId, setUserSubjectId] = useState('');
-    const [tagId, setTagId] = useState('');
+    const [tagId, setTagId] = useState(''); // de adaugat aici
+
+    //materiile la care e inrolat userul curent
+    const [subjects, setSubjects] = useState([]);
+
+    //materia la care va posta notita
+    const [selectedSubject, setSelectedSubject] = useState('');
+
+    //intrarea corespunzatoarea materiei selectate (+userul curent)
+    const [userSubject, setUserSubject] = useState(''); // combinatia de user curent si subject selectat
+
+    // obtinere materii la care user-ul e inrolat
+    useEffect(() => {
+        const fetchUserSubjects = async () => {
+            try {
+                const response = await fetch(`/api/subject/${user.UserId}/subjects`);  //ret subjects
+                const data = await response.json();
+                setSubjects(data);
+            } catch (error) {
+                console.error("Error fetching subjects:", error);
+            }
+        };
+
+        if (user && user.UserId) {
+            fetchUserSubjects();
+        }
+    }, [user]);
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -15,10 +40,28 @@ export default function NewNote() {
         setContent(e.target.value);
     };
 
-    const handleUserSubjectChange = (e) => {
-        setUserSubjectId(e.target.value);
+    // handle schimbarea materiei selectate
+    const handleUserSubjectChange = async (e) => {
+        const subjectId = e.target.value; // obtine id materie selectata
+        setSelectedSubject(subjectId); 
+
+        // api - user subject
+        try {
+            const response = await fetch(`/api/userSubject/user/${user.UserId}/subject/${subjectId}`);
+            const data = await response.json();
+
+            if (data) {
+                setUserSubject(data); 
+            } else {
+                console.error("Nu s-a găsit combinația User-Subject");
+            }
+        } catch (error) {
+            console.error("Error fetching user subject:", error);
+        }
     };
 
+
+    //de implementat
     const handleTagChange = (e) => {
         setTagId(e.target.value);
     };
@@ -27,10 +70,10 @@ export default function NewNote() {
         e.preventDefault();
 
         const newNote = {
-            "Title": title,
-            "Content": content,
-            "UserSubjectId": userSubjectId
-                };
+            Title: title,
+            Content: content,
+            UserSubjectId: userSubject.UserSubjectId, 
+        };
 
         try {
             const response = await fetch('/api/note', {
@@ -45,7 +88,8 @@ export default function NewNote() {
                 console.log("Note created successfully!");
                 setTitle('');
                 setContent('');
-                setUserSubjectId('');
+                setSelectedSubject(''); 
+                setUserSubject(''); 
                 setTagId('');
             } else {
                 console.error("Error creating note:", response.statusText);
@@ -77,14 +121,27 @@ export default function NewNote() {
                     />
                 </div>
 
-                <input
-                    type="number"
-                    id="userSubjectId"
-                    value={userSubjectId}
-                    onChange={handleUserSubjectChange}
-                    placeholder="Enter User Subject ID"
-                    required
-                />
+                {/* spinner pt selectarea materiei */}
+                <div className="form-group">
+                    <label htmlFor="subjectId">Selectează o materie:</label>
+                    <select
+                        id="subjectId"
+                        value={selectedSubject} // selected subject
+                        onChange={handleUserSubjectChange} //  handleUserSubjectChange la schimbare selectie
+                        required
+                    >
+                        <option value="">Alege o materie</option>
+                        {subjects.length > 0 ? (
+                            subjects.map((subject) => (
+                                <option key={subject.SubjectId} value={subject.SubjectId}>
+                                    {subject.SubjectName}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="" disabled>Nu sunteți înrolat la nicio materie</option>
+                        )}
+                    </select>
+                </div>
 
                 {/* <input
                     type="number"

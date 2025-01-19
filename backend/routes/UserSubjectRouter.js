@@ -1,5 +1,5 @@
 import express from "express";
-import { getUserSubjects, addUserToSubject, getUserSubjectsByUser, getUsersBySubject, removeUserFromSubject, getUserSubject } from "../dataAccess/UserSubjectDa.js"
+import { getUserSubjects, addUserToSubject, getUserSubjectsByUser, getUsersBySubject, removeUserFromSubject, getUserSubject, getUserSubjectByUserAndSubject } from "../dataAccess/UserSubjectDa.js"
 
 let userSubjectRouter=express.Router();
 
@@ -45,5 +45,9 @@ userSubjectRouter.route("/userSubject/:id").delete(async (req, res) => {
         return res.status(400).json({ error: error.message });
     }
 });
+
+userSubjectRouter.route("/userSubject/user/:userId/subject/:subjectId").get(async (req, res)=>{
+    return res.json(await getUserSubjectByUserAndSubject(req.params.userId, req.params.subjectId))
+})
 
 export default userSubjectRouter;

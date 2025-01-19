@@ -60,7 +60,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home isAuthenticated={isAuthenticated} />}></Route>
         <Route path="/notes" element={ isAuthenticated ? <Notes user={user}/> : <Home></Home>} />
-        <Route path="/notes/new" element={isAuthenticated ? <NewNote /> : <Home></Home>}></Route>
+        <Route path="/notes/new" element={isAuthenticated ? <NewNote user={user}/> : <Home></Home>}></Route>
 
         {/* id care poate fi folosit -> edit */}
         {/* asta e var 1 - route params; 
