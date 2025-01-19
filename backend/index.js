@@ -35,7 +35,7 @@ app.use(session({
     saveUninitialized: false, // Saves only if a session is modified
     cookie: {
       secure: false, // Set true if using HTTPS
-      maxAge: 1000 * 60, // 1 minute session expiration
+      maxAge: 1000 * 60*5, // 5 minute session expiration
     }
   }));
 

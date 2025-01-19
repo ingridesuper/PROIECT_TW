@@ -1,0 +1,3 @@
+de schimbat api vezi
+ca acum nu ia bine -> vezi conexiunea intre ele
+maine: start working in notelist.js

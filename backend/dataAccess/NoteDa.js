@@ -1,5 +1,6 @@
 import Note from "../entities/Note.js";
 import LikeOp from "./Operators.js"
+import { getSubjectsByUser } from "../dataAccess/UserSubjectDa.js";
 
 //all notes
 async function getNotes(){
@@ -46,12 +47,8 @@ async function getNoteWithFilterAndPagination(filter){
 
     let whereClause = {};
     
-    if (filter.userId){
-        whereClause.UserId = filter.userId;
-    }
-
-    if(filter.subjectId){
-        whereClause.SubjectId =filter.subjectId;
+    if (filter.userSubjectId){
+        whereClause.UserSubjectId = filter.userSubjectId;
     }
 
     //implementeaza aici order by date de asemenea
@@ -76,4 +73,32 @@ async function getNoteWithFilterAndPagination(filter){
       });
 }
 
-export {getNotes, getNoteById, createNote, updateNote, deleteNote, getNoteWithFilterAndPagination}
+//note of user
+async function getNotesByUserId(userId) {
+    if (!userId) {
+        throw new Error("UserId este necesar.");
+    }
+
+    try {
+        const userSubjects = await getSubjectsByUser(userId);
+
+        if (!userSubjects || userSubjects.length === 0) {
+            return []; // Utilizatorul nu are materii
+        }
+
+        const userSubjectIds = userSubjects.map((us) => us.UserSubjectId);
+
+        const notes = await Note.findAll({
+            where: {
+                UserSubjectId: userSubjectIds, 
+            },
+        });
+
+        return notes;
+    } catch (error) {
+        console.error("Eroare la obținerea notelor:", error);
+        throw error;
+    }
+}
+
+export {getNotes, getNoteById, createNote, updateNote, deleteNote, getNoteWithFilterAndPagination, getNotesByUserId}

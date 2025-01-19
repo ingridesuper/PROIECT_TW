@@ -24,6 +24,7 @@ function App() {
         if (data.isAuthenticated) {
           setIsAuthenticated(true);
           setUser(data.user); // salvam utilizatorul
+          console.log(data.user) 
 
         } else {
           setIsAuthenticated(false);
@@ -57,7 +58,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home isAuthenticated={isAuthenticated} />}></Route>
-        <Route path="/notes" element={isAuthenticated ? <Notes /> : <Home></Home>} />
+        <Route path="/notes" element={ isAuthenticated ? <Notes user={user}/> : <Home></Home>} />
         <Route path="/notes/new" element={isAuthenticated ? <NewNote /> : <Home></Home>}></Route>
 
         {/* id care poate fi folosit -> edit */}
