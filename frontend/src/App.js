@@ -6,7 +6,8 @@ import NewNote from './pages/notes/NewNote';
 import EditNote from './pages/notes/EditNote';
 import NotFound from './pages/NotFound';
 import StudyGroups from './pages/StudyGroups';
-import Subjects from './pages/Subjects';
+import Subjects from './pages/subject/Subjects';
+import EnrollSubject from "./pages/subject/EnrollSubject";
 import "./styles/styles.css"
 import penIcon from "./media/pen.svg"
 
@@ -71,7 +72,8 @@ function App() {
         <Route path="/studygroups" element={isAuthenticated ? <StudyGroups /> : <Home></Home>}></Route>
 
 
-        <Route path="/subjects" element={isAuthenticated ? <Subjects /> : <Home></Home>}></Route>
+        <Route path="/subjects" element={isAuthenticated ? <Subjects user={user}/> : <Home></Home>}></Route>
+        <Route path="/subjects/enroll" element={isAuthenticated ? <EnrollSubject user={user}/> : <Home></Home>}></Route>
 
         <Route path="*" element={<NotFound></NotFound>}></Route>
       </Routes>

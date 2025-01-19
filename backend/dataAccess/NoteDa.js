@@ -1,6 +1,6 @@
 import Note from "../entities/Note.js";
 import LikeOp from "./Operators.js"
-import { getSubjectsByUser } from "../dataAccess/UserSubjectDa.js";
+import { getUserSubjectsByUser } from "../dataAccess/UserSubjectDa.js";
 
 //all notes
 async function getNotes(){
@@ -80,7 +80,7 @@ async function getNotesByUserId(userId) {
     }
 
     try {
-        const userSubjects = await getSubjectsByUser(userId);
+        const userSubjects = await getUserSubjectsByUser(userId);
 
         if (!userSubjects || userSubjects.length === 0) {
             return []; // Utilizatorul nu are materii
@@ -107,7 +107,7 @@ async function getNotesWithFiltersAndPagination(userId, filter = {}) {
     let whereClause = {};
 
     if (userId) {
-        const userSubjects = await getSubjectsByUser(userId);
+        const userSubjects = await getUserSubjectsByUser(userId);
 
         if (!userSubjects || userSubjects.length === 0) {
             return []; 

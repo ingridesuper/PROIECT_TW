@@ -1,5 +1,5 @@
 import express from "express";
-import { getUserSubjects, addUserToSubject, getSubjectsByUser, getUsersBySubject, removeUserFromSubject, getUserSubject } from "../dataAccess/UserSubjectDa.js"
+import { getUserSubjects, addUserToSubject, getUserSubjectsByUser, getUsersBySubject, removeUserFromSubject, getUserSubject } from "../dataAccess/UserSubjectDa.js"
 
 let userSubjectRouter=express.Router();
 

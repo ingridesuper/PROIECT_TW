@@ -22,7 +22,7 @@ async function addUserToSubject(userId, subjectId) {
     }
 
     // verificam daca materia exista
-    const subject = await Subject.findByPk(subjectId); // Asigură-te că ai importat Subject
+    const subject = await Subject.findByPk(subjectId); 
     if (!subject) {
         throw new Error("Materia nu există.");
     }
@@ -39,7 +39,7 @@ async function addUserToSubject(userId, subjectId) {
 }
 
 // obtinere toate materiile unui user
-async function getSubjectsByUser(userId) {
+async function getUserSubjectsByUser(userId) {
     //validari?
     return await UserSubject.findAll({ where: { UserId: userId } });
 }
@@ -59,4 +59,4 @@ async function removeUserFromSubject(userSubjectId) {
     await user.destroy();
 }
 
-export { getUserSubjects, addUserToSubject, getSubjectsByUser, getUsersBySubject, removeUserFromSubject, getUserSubject };
+export { getUserSubjects, addUserToSubject, getUserSubjectsByUser, getUsersBySubject, removeUserFromSubject, getUserSubject };
