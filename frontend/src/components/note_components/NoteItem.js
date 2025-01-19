@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./component_styles/NoteItem.css"
+import "../component_styles/NoteItem.css"
 
 export default function NoteItem({ note }) {
   return (

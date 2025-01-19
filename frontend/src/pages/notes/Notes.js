@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import NoteList from "../../components/NoteList"; 
+import NoteList from "../../components/note_components/NoteList"; 
 import { Link } from "react-router-dom"; 
 import './Notes.css';
 

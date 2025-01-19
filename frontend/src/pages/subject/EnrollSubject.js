@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import SubjectList from "../../components/SubjectList";
+import SubjectList from "../../components/subject_components/SubjectList";
 
 export default function EnrollSubject({ user }) {
     const [subjects, setSubjects] = useState([]);
 
     useEffect(() => {
         if (user && user.UserId) {
-            fetch(`/api/subject/${user.UserId}/notEnrolled`) // Materiile disponibile pentru înrolare
+            fetch(`/api/subject/${user.UserId}/notEnrolled`) // materiile disponibile pentru inrolare, la care studentul nu e deja inrlat
                 .then((r) => r.json())
                 .then((data) => {
                     setSubjects(data || []);
@@ -17,15 +17,15 @@ export default function EnrollSubject({ user }) {
 
     const handleEnroll = (subjectId) => {
         if (user && user.UserId) {
-            // Trimiterea cererii POST către server pentru a înrola utilizatorul la materie
+            // cerere post pt inrolare
             fetch('/api/userSubject', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    UserId: user.UserId,  // ID-ul utilizatorului
-                    SubjectId: subjectId, // ID-ul materiei
+                    UserId: user.UserId,  
+                    SubjectId: subjectId, 
                 }),
             })
                 .then((response) => response.json())
@@ -33,7 +33,7 @@ export default function EnrollSubject({ user }) {
                     if (data.error) {
                         console.error('Error enrolling:', data.error);
                     } else {
-                        // Dacă înrolarea este cu succes, actualizează lista de materii disponibile
+                        //actualizare lista materii disponibile
                         setSubjects(subjects.filter((subject) => subject.SubjectId !== subjectId));
                     }
                 })

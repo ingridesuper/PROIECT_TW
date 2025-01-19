@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SubjectList from "../../components/SubjectList";
+import SubjectList from "../../components/subject_components/SubjectList";
 import { Link } from "react-router-dom";
 
 export default function Subjects({ user }) {

@@ -1,8 +1,9 @@
-// SubjectList.js
 import React from "react";
 import SubjectItem from "./SubjectItem";
-import "./component_styles/Subject.css";
+import "../component_styles/Subject.css";
 
+// folosita si pt vizualizare materii la care stud e inrolat, si pt inrolare
+// in fct de props
 export default function SubjectList({ subjects, canEnroll, onEnroll }) {
     return (
         <table>
@@ -10,7 +11,7 @@ export default function SubjectList({ subjects, canEnroll, onEnroll }) {
                 <tr>
                     <th>ID</th>
                     <th>Nume materie</th>
-                    {canEnroll && <th>Înrolare</th>} {/* afișează buton doar dacă suntem în pagină de înrolare */}
+                    {canEnroll && <th>Înrolare</th>} {/* afisare buton doar daca suntem in pg inrolare */}
                 </tr>
             </thead>
             <tbody>

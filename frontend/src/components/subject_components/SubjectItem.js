@@ -1,4 +1,3 @@
-// Componenta SubjectItem
 export default function SubjectItem({ subject, canEnroll, onEnroll }) {
     return (
         <tr>
