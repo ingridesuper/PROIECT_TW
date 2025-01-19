@@ -16,6 +16,7 @@
     margin-bottom: 50px; 
     justify-content: left; 
     flex-wrap: nowrap; 
+    color: rgb(120, 119, 119);
   }
   
   .filters input {
@@ -23,7 +24,15 @@
     font-size: 14px;
     width: 250px; 
     border-left: 1px solid gray;
+
   }
+
+  input::placeholder {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: rgb(88, 87, 87);
+  }
+  
 
   .fab {
     position: fixed;
@@ -40,4 +49,13 @@
     display: flex;
     justify-content: center; 
     align-items: center; 
+  }
+
+  .spinner{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: rgb(88, 87, 87);
   }

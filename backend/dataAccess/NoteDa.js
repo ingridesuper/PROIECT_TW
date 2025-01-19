@@ -145,5 +145,20 @@ async function getNotesWithFiltersAndPagination(userId, filter = {}) {
 }
 
 
+async function getNotesByUserSubjectId(userSubjectId) {
+    try {
+        const notes = await Note.findAll({
+            where: {
+                UserSubjectId: userSubjectId,
+            },
+        });
 
-export {getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId}
+        return notes;
+    } catch (error) {
+        console.error("Eroare la obținerea notelor pentru UserSubjectId:", error);
+        throw error;
+    }
+}
+
+
+export {getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId, getNotesByUserSubjectId}

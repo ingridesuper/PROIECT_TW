@@ -1,5 +1,5 @@
 import express from "express";
-import {getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId} from "../dataAccess/NoteDa.js";
+import {getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId, getNotesByUserSubjectId} from "../dataAccess/NoteDa.js";
 
 let noteRouter=express.Router();
 
@@ -87,6 +87,16 @@ noteRouter.route("/note/user/:userId").get(async (req, res) => {
     } catch (error) {
         console.error("Eroare la obținerea notelor pentru utilizator:", error);
         return res.status(500).json({ error: "A apărut o eroare la procesarea cererii." });
+    }
+});
+
+noteRouter.route("/note/userSubject/:userSubjectId").get(async (req, res) => {
+    try {
+        const notes = await getNotesByUserSubjectId(req.params.userSubjectId);
+        res.json(notes);
+    } catch (error) {
+        console.error("Eroare la obținerea notelor:", error);
+        res.status(500).send("Eroare la obținerea notelor");
     }
 });
 
