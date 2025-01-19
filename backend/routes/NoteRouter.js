@@ -1,5 +1,5 @@
 import express from "express";
-import {getNotes, getNoteById, createNote, updateNote, deleteNote, getNoteWithFilterAndPagination, getNotesByUserId} from "../dataAccess/NoteDa.js";
+import {getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId} from "../dataAccess/NoteDa.js";
 
 let noteRouter=express.Router();
 
@@ -50,9 +50,32 @@ noteRouter.route("/note/:id").delete(async (req, res) => {
 })
 
 //filtrare paginare
-noteRouter.route("/note/noteFilter").get(async (req, res)=>{
-    return res.json(await getNoteWithFilterAndPagination(req.query)); //query - query params din ruta
-})
+// noteRouter.route("/note/noteFilter").get(async (req, res)=>{
+//     return res.json(await getNoteWithFilterAndPagination(req.query)); //query - query params din ruta
+// })
+
+noteRouter.get('/note/noteFilter/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;  // Folosim userId din parametrii rutei
+        const { take, skip, title, content, createdAt } = req.query;
+
+        const filter = {
+            take: take ? parseInt(take) : 10,  
+            skip: skip ? parseInt(skip) : 1,     
+            title: title || undefined,           
+            content: content || undefined,        
+            createdAt: createdAt || undefined,    
+        };
+
+        const notes = await getNotesWithFiltersAndPagination(userId, filter);
+
+        res.json(notes);
+    } catch (error) {
+        console.error('Eroare la obținerea notelor:', error);
+        res.status(500).json({ error: 'A apărut o eroare la obținerea notelor.' });
+    }
+});
+
 
 
 //notes of user

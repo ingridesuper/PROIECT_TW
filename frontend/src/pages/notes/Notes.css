@@ -10,3 +10,17 @@
     justify-content: center;
   }
   
+  .filters {
+    display: flex; 
+    gap: 20px;
+    margin-bottom: 50px; 
+    justify-content: left; 
+    flex-wrap: nowrap; 
+  }
+  
+  .filters input {
+    padding: 10px;
+    font-size: 14px;
+    width: 250px; 
+    border-left: 1px solid gray;
+  }

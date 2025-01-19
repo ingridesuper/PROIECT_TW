@@ -1,23 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import NoteList from "../../components/NoteList"; 
 import { Link } from "react-router-dom"; 
 import './Notes.css';
 
-export default function Notes({user}) {
+export default function Notes({ user }) {
+  const [filters, setFilters] = useState({
+    title: "",
+    content: "",
+    tag: "",
+  });
 
-
-    
-    
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters({
+      ...filters,
+      [name]: value,
+    });
+  };
 
   return (
     <>
-    <Link to="./new">
-    <button className="fab">+</button>
-    </Link>
-    
-    <div className="notes-container">
-      <NoteList user={user} />
-    </div>
+      {/* adaugare notita noua */}
+      <Link to="./new">
+        <button className="fab">+</button>
+      </Link>
+
+      {/* formular filtrare */}
+      <div className="filters">
+        <input
+          type="text"
+          name="title"
+          placeholder="Caută după titlu..."
+          value={filters.title}
+          onChange={handleFilterChange}
+        />
+        <input
+          type="text"
+          name="content"
+          placeholder="Caută după conținut..."
+          value={filters.content}
+          onChange={handleFilterChange}
+        />
+        <input
+          type="text"
+          name="tag"
+          placeholder="Caută după tag..."
+          value={filters.tag}
+          onChange={handleFilterChange}
+        />
+      </div>
+
+      <div className="notes-container">
+        <NoteList user={user} filters={filters} />
+      </div>
     </>
   );
 }
