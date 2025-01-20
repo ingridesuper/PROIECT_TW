@@ -4,20 +4,16 @@ import { Link } from "react-router-dom";
 import './Notes.css';
 
 export default function Notes({ user }) {
+
+  // filtere selectate
   const [filters, setFilters] = useState({
     title: "",
     content: "",
     tag: ""
   });
 
-  // mat la care e inrolat
+  // materiile la care este înrolat utilizatorul
   const [subjects, setSubjects] = useState([]);
-
-  const [userSubject, setUserSubject] = useState(null);
-
-  const [selectedSubject, setSelectedSubject] = useState('');
-
-  // mat la care e inrolat
   useEffect(() => {
     const fetchUserSubjects = async () => {
       try {
@@ -34,30 +30,67 @@ export default function Notes({ user }) {
     }
   }, [user]);
 
-  //schimbare mat selectata
+  // materie selectată (inițial null)
+  const [selectedSubject, setSelectedSubject] = useState(null);
+
+  // lista de note
+  const [notes, setNotes] = useState([]);
+  useEffect(() => {
+    const fetchNotes = async () => {
+      try {
+        const response = await fetch(`/api/note/user/${user.UserId}`);
+        const data = await response.json();
+        setNotes(data);
+      } catch (error) {
+        console.error("Error fetching notes:", error);
+      }
+    };
+
+    if (user && user.UserId) {
+      fetchNotes();
+    }
+  }, [user]);
+
+  // schimbarea materiei selectate si actualizarea notitelor
   const handleUserSubjectChange = async (e) => {
     const subjectId = e.target.value;
-    setSelectedSubject(subjectId);
+    setSelectedSubject(null); //reset sel ant
 
     if (subjectId === "") {
-      setUserSubject(null);
+      setSelectedSubject(null);
+      try {
+        const response = await fetch(`/api/note/user/${user.UserId}`);
+        const data = await response.json();
+        setNotes(data); // setăm toate notele
+      } catch (error) {
+        console.error("Error fetching notes:", error);
+      }
       return;
     }
 
+    const subject = subjects.find(subject => subject.SubjectId === subjectId);
+
+    if (subject) {
+      setSelectedSubject(subject); 
+    } else {
+      console.error("Materie necunoscută");
+    }
+
     try {
-      const response = await fetch(`/api/userSubject/user/${user.UserId}/subject/${subjectId}`);
+      const response = await fetch(`/api/note/user/${user.UserId}/subject/${subjectId}`);
       const data = await response.json();
 
       if (data) {
-        setUserSubject(data);
+        setNotes(data);
       } else {
-        console.error("Nu s-a găsit combinația User-Subject");
+        console.error("Nu s-au găsit note pentru această materie.");
       }
     } catch (error) {
-      console.error("Error fetching user subject:", error);
+      console.error("Error fetching notes by subject:", error);
     }
   };
 
+  // schimbarea filtrelor
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters({
@@ -102,7 +135,7 @@ export default function Notes({ user }) {
           <label htmlFor="subjectId">După materie:</label>
           <select
             id="subjectId"
-            value={selectedSubject}
+            value={selectedSubject ? selectedSubject.SubjectId : null}
             onChange={handleUserSubjectChange}
           >
             <option value="">Alege o materie</option>
@@ -117,11 +150,10 @@ export default function Notes({ user }) {
             )}
           </select>
         </div>
-
       </div>
 
       <div className="notes-container">
-        <NoteList user={user} filters={filters} userSubject={userSubject} />
+        <NoteList user={user} filters={filters} notes={notes} />
       </div>
     </>
   );

@@ -1,34 +1,10 @@
 import React, { useEffect, useState } from "react";
 import NoteItem from "./NoteItem";
 
-export default function NoteList({ user, filters, userSubject }) {
-  const [notes, setNotes] = useState([]);
+export default function NoteList({ filters, notes }) {
   const [filteredNotes, setFilteredNotes] = useState([]);
 
-  // fetch in fct de daca avem sau nu materie selectata
-  useEffect(() => {
-    if (userSubject == null) {
-      if (user && user.UserId) {
-        fetch(`/api/note/user/${user.UserId}`)
-          .then((r) => r.json())
-          .then((data) => {
-            setNotes(data || []); 
-            setFilteredNotes(data || []);
-          })
-          .catch((error) => console.error("Error fetching notes:", error));
-      }
-    } else {
-      fetch(`/api/note/userSubject/${userSubject.UserSubjectId}`)
-        .then((r) => r.json())
-        .then((data) => {
-          setNotes(data || []); 
-          setFilteredNotes(data || []);
-        })
-        .catch((error) => console.error("Error fetching notes:", error));
-    }
-  }, [userSubject, user]);
-
-  // filtrare locala
+  // filtrare locala -> pt filters
   useEffect(() => {
     const applyFilters = () => {
       const filtered = notes.filter((note) => {

@@ -2,6 +2,7 @@ import Note from "../entities/Note.js";
 import User from "../entities/User.js"
 import LikeOp from "./Operators.js"
 import { getUserSubjectsByUser, getUserSubjectByUserAndSubject } from "../dataAccess/UserSubjectDa.js";
+import UserSubject from "../entities/UserSubject.js";
 
 //all notes
 async function getNotes() {
@@ -42,7 +43,9 @@ async function getNotesByUserId(userId) {
     const userSubjects=await getUserSubjectsByUser(userId); //rez array; fct merge pe object
     let notes=[];
     for(let userSubject of userSubjects){
-        notes.push(await userSubject.getUserSubjectNotes()); //aici folosim alias-ul!
+        for(let note of await userSubject.getUserSubjectNotes()){   //aici folosim alias-ul!
+            notes.push(note);
+        }
     }
     return notes;
 }
@@ -96,6 +99,7 @@ async function getNotesByUserSubjectId(userId,  subjectId) {
     return await userSubject.getUserSubjectNotes()
 
 }
+
 
 
 export { getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId, getNotesByUserSubjectId }
