@@ -11,7 +11,7 @@ export default function NoteList({ filters, notes }) {
         return (
           (filters.title === "" || note.Title.toLowerCase().includes(filters.title.toLowerCase())) &&
           (filters.content === "" || note.Content.toLowerCase().includes(filters.content.toLowerCase())) &&
-          //de implemnetat
+          //de implementat
           (filters.tag === "" || (note.TagName && note.TagName.toLowerCase().includes(filters.tag.toLowerCase())))
         );
       });
@@ -21,10 +21,16 @@ export default function NoteList({ filters, notes }) {
     applyFilters();
   }, [filters, notes]);
 
+  const handleDeleteNote = (deletedNoteId) => {
+    setFilteredNotes((prevNotes) => prevNotes.filter((note) => note.id !== deletedNoteId));
+  };
+
   return (
     <div className="note-list">
       {Array.isArray(filteredNotes) && filteredNotes.length > 0 ? (
-        filteredNotes.map((note) => <NoteItem key={note.id} note={note} />)
+        filteredNotes.map((note) => (
+          <NoteItem key={note.id} note={note} onDelete={handleDeleteNote} />
+        ))
       ) : (
         <p>Nu există note disponibile.</p>
       )}

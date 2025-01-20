@@ -33,3 +33,9 @@
   .note-link {
     font-size: 0.9rem;
   }
+
+  .note-actions{
+    display: flex;
+    gap: 15px;
+    font-size: 14px;
+  }
