@@ -28,8 +28,8 @@ button {
     border: 1px solid navy;
     border-radius: 20px;
     font-weight: bold;
-    width: 15%;
-    font-size: 14px;
+    width: 20%;
+    font-size: 12px;
 }
 
 button:hover{
