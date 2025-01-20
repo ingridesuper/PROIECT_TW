@@ -23,7 +23,9 @@
     padding: 10px;
     font-size: 14px;
     width: 250px; 
+    border: none;
     border-left: 1px solid gray;
+    background-color: transparent;
 
   }
 

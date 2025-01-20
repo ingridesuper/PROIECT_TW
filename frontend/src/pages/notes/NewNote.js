@@ -1,25 +1,19 @@
 import React, { useState, useEffect } from "react";
-import "./NewNote.css";
+import MDEditor from "@uiw/react-md-editor"; // Importă editorul
+import "./NewNote.css"
 
 export default function NewNote({ user }) {
     const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [tagId, setTagId] = useState(''); // de adaugat aici
-
-    //materiile la care e inrolat userul curent
+    const [content, setContent] = useState(''); 
+    const [tagId, setTagId] = useState('');
     const [subjects, setSubjects] = useState([]);
-
-    //materia la care va posta notita
     const [selectedSubject, setSelectedSubject] = useState('');
+    const [userSubject, setUserSubject] = useState('');
 
-    //intrarea corespunzatoarea materiei selectate (+userul curent)
-    const [userSubject, setUserSubject] = useState(''); // combinatia de user curent si subject selectat
-
-    // obtinere materii la care user-ul e inrolat
     useEffect(() => {
         const fetchUserSubjects = async () => {
             try {
-                const response = await fetch(`/api/subject/${user.UserId}/subjects`);  //ret subjects
+                const response = await fetch(`/api/subject/${user.UserId}/subjects`);
                 const data = await response.json();
                 setSubjects(data);
             } catch (error) {
@@ -36,22 +30,20 @@ export default function NewNote({ user }) {
         setTitle(e.target.value);
     };
 
-    const handleContentChange = (e) => {
-        setContent(e.target.value);
+    const handleContentChange = (value) => {
+        setContent(value || ""); 
     };
 
-    // handle schimbarea materiei selectate
     const handleUserSubjectChange = async (e) => {
-        const subjectId = e.target.value; // obtine id materie selectata
-        setSelectedSubject(subjectId); 
+        const subjectId = e.target.value;
+        setSelectedSubject(subjectId);
 
-        // api - user subject
         try {
             const response = await fetch(`/api/userSubject/user/${user.UserId}/subject/${subjectId}`);
             const data = await response.json();
 
             if (data) {
-                setUserSubject(data); 
+                setUserSubject(data);
             } else {
                 console.error("Nu s-a găsit combinația User-Subject");
             }
@@ -60,20 +52,13 @@ export default function NewNote({ user }) {
         }
     };
 
-
-    //de implementat
-    const handleTagChange = (e) => {
-        setTagId(e.target.value);
-    };
-
-    
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const newNote = {
             Title: title,
-            Content: content,
-            UserSubjectId: userSubject.UserSubjectId, 
+            Content: content, 
+            UserSubjectId: userSubject.UserSubjectId,
         };
 
         try {
@@ -89,8 +74,8 @@ export default function NewNote({ user }) {
                 console.log("Note created successfully!");
                 setTitle('');
                 setContent('');
-                setSelectedSubject(''); 
-                setUserSubject(''); 
+                setSelectedSubject('');
+                setUserSubject('');
                 setTagId('');
             } else {
                 console.error("Error creating note:", response.statusText);
@@ -113,22 +98,23 @@ export default function NewNote({ user }) {
                 />
 
                 <div className="form-group">
-                    <textarea
+                    <label htmlFor="content">Write your note in Markdown:</label>
+                    <br></br>
+                    {/* Editor Markdown */}
+                    <MDEditor
                         id="content"
-                        value={content}
+                        value={content} 
                         onChange={handleContentChange}
-                        placeholder="Content..."
-                        required
+                        preview="live"
                     />
                 </div>
 
-                {/* spinner pt selectarea materiei */}
                 <div className="form-group">
                     <label htmlFor="subjectId">Selectează o materie:</label>
                     <select
                         id="subjectId"
-                        value={selectedSubject} // selected subject
-                        onChange={handleUserSubjectChange} //  handleUserSubjectChange la schimbare selectie
+                        value={selectedSubject}
+                        onChange={handleUserSubjectChange}
                         required
                     >
                         <option value="">Alege o materie</option>
@@ -143,14 +129,6 @@ export default function NewNote({ user }) {
                         )}
                     </select>
                 </div>
-
-                {/* <input
-                    type="number"
-                    id="tagId"
-                    value={tagId}
-                    onChange={handleTagChange}
-                    placeholder="Tags ID (optional)"
-                /> */}
 
                 <button type="submit">Save</button>
             </form>

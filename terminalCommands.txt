@@ -11,3 +11,9 @@ https://stackoverflow.com/questions/68975769/brew-services-cant-start-service-ge
 
 //am instalat pe front:
 npm install mobx mobx-react
+
+
+//markdown
+npm install react-markdown
+npm install react-simplemde-editor
+npm i @uiw/react-md-editor
