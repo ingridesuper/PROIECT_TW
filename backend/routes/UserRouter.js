@@ -27,10 +27,10 @@ userRouter.route("/userFilter").get(async (req, res)=>{
     return res.json(await getUserWithFilterAndPagination(req.query)); //query - query params din ruta
 })
 //asa arata ruta de ex pt mailuri care contin ingrid
-//http://localhost:9000/api//userFilter?userEmail=ingrid
+//http://localhost:9000/api/userFilter?userEmail=ingrid
 //si pt paginare
-//http://localhost:9000/api//userFilter?userEmail=ingrid&take=1
+//http://localhost:9000/api/userFilter?userEmail=ingrid&take=1
 //pt skip
-//http://localhost:9000/api//userFilter?userEmail=ingrid&take=1&skip=1
+//http://localhost:9000/api/userFilter?userEmail=ingrid&take=1&skip=1
 
 export default userRouter;

@@ -96,22 +96,23 @@ app.get('/api/auth/status', (req, res) => {
   
   
 
-app.use("/api", isLoggedIn, createDbRouter);
-app.use("/api", isLoggedIn, userRouter);
-app.use("/api", isLoggedIn, subjectRouter);
-app.use("/api", isLoggedIn, userSubjectRouter);
-app.use("/api", isLoggedIn, noteRouter);
-app.use("/api", isLoggedIn, tagRouter);
-app.use("/api", isLoggedIn, studyGroupRouter);
-app.use("/api", isLoggedIn, userStudyGroupRouter);
-// app.use("/api", createDbRouter);
-// app.use("/api", userRouter);
-// app.use("/api", subjectRouter);
-// app.use("/api", userSubjectRouter);
-// app.use("/api", noteRouter);
-// app.use("/api", tagRouter);
-// app.use("/api", studyGroupRouter);
-// app.use("/api", userStudyGroupRouter);
+// app.use("/api", isLoggedIn, createDbRouter);
+// app.use("/api", isLoggedIn, userRouter);
+// app.use("/api", isLoggedIn, subjectRouter);
+// app.use("/api", isLoggedIn, userSubjectRouter);
+// app.use("/api", isLoggedIn, noteRouter);
+// app.use("/api", isLoggedIn, tagRouter);
+// app.use("/api", isLoggedIn, studyGroupRouter);
+// app.use("/api", isLoggedIn, userStudyGroupRouter);
+
+app.use("/api", createDbRouter);
+app.use("/api", userRouter);
+app.use("/api", subjectRouter);
+app.use("/api", userSubjectRouter);
+app.use("/api", noteRouter);
+app.use("/api", tagRouter);
+app.use("/api", studyGroupRouter);
+app.use("/api", userStudyGroupRouter);
 
 let port = process.env.PORT || 8001;
 app.listen(port);

@@ -49,10 +49,6 @@ noteRouter.route("/note/:id").delete(async (req, res) => {
     }
 })
 
-//filtrare paginare
-// noteRouter.route("/note/noteFilter").get(async (req, res)=>{
-//     return res.json(await getNoteWithFilterAndPagination(req.query)); //query - query params din ruta
-// })
 
 noteRouter.get('/note/noteFilter/:userId', async (req, res) => {
     try {
@@ -76,8 +72,6 @@ noteRouter.get('/note/noteFilter/:userId', async (req, res) => {
     }
 });
 
-
-
 //notes of user
 noteRouter.route("/note/user/:userId").get(async (req, res) => {
     try {
@@ -90,9 +84,10 @@ noteRouter.route("/note/user/:userId").get(async (req, res) => {
     }
 });
 
-noteRouter.route("/note/userSubject/:userSubjectId").get(async (req, res) => {
+//notes of user for subject
+noteRouter.route("/note/user/:userId/subject/:subjectId").get(async (req, res) => {
     try {
-        const notes = await getNotesByUserSubjectId(req.params.userSubjectId);
+        const notes = await getNotesByUserSubjectId(req.params.userId, req.params.subjectId);
         res.json(notes);
     } catch (error) {
         console.error("Eroare la obținerea notelor:", error);

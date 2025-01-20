@@ -13,14 +13,9 @@ async function getUserSubject(id) {
     return await UserSubject.findByPk(id);
 }
 
-//usersubject with user and subject
+//usersubject with user and subject -> gresit
 async function getUserSubjectByUserAndSubject(userId, subjectId) {
-    return await UserSubject.findOne({
-        where: {
-            UserId: userId,
-            SubjectId: subjectId
-        }
-    });
+    return await UserSubject.findOne({ where: { UserId: userId, SubjectId: subjectId } });
 }
 
 //inroleaza un user la o materie
@@ -48,13 +43,13 @@ async function addUserToSubject(userId, subjectId) {
     return await UserSubject.create({ UserId: userId, SubjectId: subjectId });
 }
 
-// obtinere toate materiile unui user
+// obtinere toate userSubject ale unui user
 async function getUserSubjectsByUser(userId) {
     //validari?
     return await UserSubject.findAll({ where: { UserId: userId } });
 }
 
-// obtinere toti utilizatorii inrolati la o materie
+// obtinere toti usersubject pt un subject
 async function getUsersBySubject(subjectId) {
     //validari?
     return await UserSubject.findAll({ where: { SubjectId: subjectId } });

@@ -1,0 +1,5 @@
+->functii sequelize n-m:
+https://github.com/sequelize/sequelize/blob/3e5b8772ef75169685fc96024366bca9958fee63/lib/associations/belongs-to-many.js#L209
+
+-> functii sequelize 1-n:
+https://github.com/sequelize/sequelize/blob/3e5b8772ef75169685fc96024366bca9958fee63/lib/associations/has-many.js

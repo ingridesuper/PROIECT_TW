@@ -1,7 +1,13 @@
 import express from "express";
-import {getSubjects, getSubjectById, createSubject, updateSubject, deleteSubject, getSubjectWithFilterAndPagination, getSubjectsByUser, getSubjectsNotEnrolledByUser} from "../dataAccess/SubjectDa.js";
+import {getSubjects, getSubjectById, createSubject, updateSubject, deleteSubject, getSubjectWithFilterAndPagination, getSubjectsByUser, getSubjectsNotEnrolledByUser, getUsersOfSubjectBySubjectId} from "../dataAccess/SubjectDa.js";
 
 let subjectRouter=express.Router();
+
+
+//nou
+subjectRouter.route("/subject/join/user/:subjectId").get(async (req, res)=>{
+    return res.json(await getUsersOfSubjectBySubjectId(req.params.subjectId));
+})
 
 //adaugare subject nou
 subjectRouter.route("/subject").post(async (req, res)=>{
@@ -40,11 +46,12 @@ subjectRouter.route("/subjectFilter").get(async (req, res)=>{
     return res.json(await getSubjectWithFilterAndPagination(req.query)); 
 })
 
-
+//subjects a given user is enrolled in
 subjectRouter.route("/subject/:userId/subjects").get(async (req, res)=>{
     return res.json(await getSubjectsByUser(req.params.userId))
 })
 
+//subject a given user is not enrolled in
 subjectRouter.route("/subject/:userId/notEnrolled").get(async (req, res)=>{
     return res.json(await getSubjectsNotEnrolledByUser(req.params.userId))
 })

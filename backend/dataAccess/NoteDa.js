@@ -1,104 +1,50 @@
 import Note from "../entities/Note.js";
+import User from "../entities/User.js"
 import LikeOp from "./Operators.js"
-import { getUserSubjectsByUser } from "../dataAccess/UserSubjectDa.js";
+import { getUserSubjectsByUser, getUserSubjectByUserAndSubject } from "../dataAccess/UserSubjectDa.js";
 
 //all notes
-async function getNotes(){
+async function getNotes() {
     return await Note.findAll();
 }
 
 //notes by id
-async function getNoteById(id){
+async function getNoteById(id) {
     return await Note.findByPk(id);
 }
 
 //create note
 //validari?
-async function createNote(note){
+async function createNote(note) {
     return await Note.create(note)
 }
 
 //update note
-async function updateNote(id, noteData){
-    const note=await Note.findByPk(id);
-    if(!note){
+async function updateNote(id, noteData) {
+    const note = await Note.findByPk(id);
+    if (!note) {
         throw new Error("Notița nu a fost găsită.");
     }
     return await note.update(noteData)
 }
 
 //delete
-async function deleteNote(id){
-    const note=await Note.findByPk(id);
-    if(!note){
+async function deleteNote(id) {
+    const note = await Note.findByPk(id);
+    if (!note) {
         throw new Error("Notița nu a fost găsită.");
     }
     await note.destroy()
 }
 
-// //filtrare si paginare
-// async function getNoteWithFilterAndPagination(filter){
-  
-//     if (!filter.take)
-//       filter.take = 10; 
-
-//     if (!filter.skip)
-//       filter.skip = 1; 
-
-//     let whereClause = {};
-    
-//     if (filter.userSubjectId){
-//         whereClause.UserSubjectId = filter.userSubjectId;
-//     }
-
-//     //implementeaza aici order by date de asemenea
-//     if(filter.createdAt){
-//         whereClause.CreatedAt=filter.createdAt;
-//     }
-
-//     if(filter.title){
-//         whereClause.Title={[LikeOp]: `%${filter.title}%`};
-//     }
-
-//     if(filter.content){
-//         whereClause.Content={[LikeOp]: `%${filter.content}%`};
-//     }
-  
-//     return await Note.findAndCountAll (
-//       {   
-//         distinct: true,         
-//         where: whereClause,
-//         limit: parseInt(filter.take),
-//         offset: parseInt(filter.skip - 1) * parseInt(filter.take)
-//       });
-// }
-
-//note of user
+//get all notes of a specific user -> am modificat
 async function getNotesByUserId(userId) {
-    if (!userId) {
-        throw new Error("UserId este necesar.");
+    const userSubjects=await getUserSubjectsByUser(userId); //rez array; fct merge pe object
+    let notes=[];
+    for(let userSubject of userSubjects){
+        notes.push(await userSubject.getUserSubjectNotes()); //aici folosim alias-ul!
     }
-
-    try {
-        const userSubjects = await getUserSubjectsByUser(userId);
-
-        if (!userSubjects || userSubjects.length === 0) {
-            return []; // Utilizatorul nu are materii
-        }
-
-        const userSubjectIds = userSubjects.map((us) => us.UserSubjectId);
-
-        const notes = await Note.findAll({
-            where: {
-                UserSubjectId: userSubjectIds, 
-            },
-        });
-
-        return notes;
-    } catch (error) {
-        console.error("Eroare la obținerea notelor:", error);
-        throw error;
-    }
+    return notes;
 }
 
 //cu tot cu userId inclus
@@ -110,7 +56,7 @@ async function getNotesWithFiltersAndPagination(userId, filter = {}) {
         const userSubjects = await getUserSubjectsByUser(userId);
 
         if (!userSubjects || userSubjects.length === 0) {
-            return []; 
+            return [];
         }
 
         const userSubjectIds = userSubjects.map((us) => us.UserSubjectId);
@@ -131,34 +77,25 @@ async function getNotesWithFiltersAndPagination(userId, filter = {}) {
 
     try {
         const notes = await Note.findAndCountAll({
-            distinct: true, 
+            distinct: true,
             where: whereClause,
             limit: parseInt(filter.take),
             offset: (parseInt(filter.skip) - 1) * parseInt(filter.take),
         });
 
-        return notes; 
+        return notes;
     } catch (error) {
         console.error("Eroare la obținerea notelor:", error);
         throw error;
     }
 }
 
+//get notes of user for specific subject-> am modificat
+async function getNotesByUserSubjectId(userId,  subjectId) {
+    const userSubject=await getUserSubjectByUserAndSubject(userId, subjectId);
+    return await userSubject.getUserSubjectNotes()
 
-async function getNotesByUserSubjectId(userSubjectId) {
-    try {
-        const notes = await Note.findAll({
-            where: {
-                UserSubjectId: userSubjectId,
-            },
-        });
-
-        return notes;
-    } catch (error) {
-        console.error("Eroare la obținerea notelor pentru UserSubjectId:", error);
-        throw error;
-    }
 }
 
 
-export {getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId, getNotesByUserSubjectId}
+export { getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId, getNotesByUserSubjectId }

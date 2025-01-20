@@ -3,21 +3,19 @@ import Subject from "../entities/Subject.js";
 import LikeOp from "./Operators.js"
 
 async function getUsers(){
-    //return await User.findAll({include: ["Subjects"]})
     return await User.findAll()
 }
 
 async function getUserById(id){
-    //return await User.findByPk(id, {include: ["Subjects"]})
     return await User.findByPk(id)
 }
 
-//am adaugat asta pt autentificare
+//pt autentificare
 async function getUserByEmail(email) {
   return await User.findOne({where: {UserEmail: email}});
 }
 
-
+//create user
 async function createUser(user){
     // validare mail institutional
     if (!user.UserEmail || !user.UserEmail.endsWith("@stud.ase.ro")) {
