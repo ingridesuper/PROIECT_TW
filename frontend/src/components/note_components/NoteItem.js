@@ -56,7 +56,7 @@ export default function NoteItem({ user, note, onDelete }) {
           <ul>
             {attachments.map((attachment) => (
               <li key={attachment.id}>
-                <a id="linkAtasament" href={`/${attachment.FilePath}`} target="_blank" rel="noopener noreferrer">
+                <a id="linkAtasament" href={`http://localhost:9000/${attachment.FilePath}`} target="_blank" rel="noopener noreferrer">
                   {attachment.FileName}
                 </a>
               </li>

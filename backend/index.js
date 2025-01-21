@@ -15,10 +15,14 @@ import passport from 'passport';
 import session from 'express-session';
 import cors from 'cors';
 import './auth.js'
+import path from 'path';
+
 
 env.config()
 
 let app = express();
+
+
 
 app.use(express.json()); 
 app.use(cors())
@@ -95,7 +99,9 @@ app.get('/api/auth/status', (req, res) => {
     });
   });
   
-  
+  // config pentru a servi fis statice din directorul 'uploads'
+const __dirname = path.resolve(); // obtine directorul curent
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // app.use("/api", isLoggedIn, createDbRouter);
 // app.use("/api", isLoggedIn, userRouter);
