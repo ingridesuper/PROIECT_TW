@@ -1,5 +1,5 @@
 import express from "express";
-import {getStudyGroups, getStudyGroupById, createStudyGroup, updateStudyGroup, deleteStudyGroup, getStudyGroupWithFilterAndPagination
+import {getStudyGroups, getStudyGroupById, createStudyGroup, updateStudyGroup, deleteStudyGroup, getStudyGroupWithFilterAndPagination, getStudyGroupsWhichUserIsPartOf
 } from "../dataAccess/StudyGroupDa.js";
 
 let studyGroupRouter=express.Router();
@@ -53,6 +53,10 @@ studyGroupRouter.route("/studyGroup/:id").delete(async (req, res) => {
 //filtrare paginare
 studyGroupRouter.route("/studyGroupFilter").get(async (req, res)=>{
     return res.json(await getStudyGroupWithFilterAndPagination(req.query)); 
+})
+
+studyGroupRouter.route("/studyGroup/user/:userId").get(async (req, res)=>{
+    return res.json(await getStudyGroupsWhichUserIsPartOf(req.params.userId))
 })
 
 export default studyGroupRouter;

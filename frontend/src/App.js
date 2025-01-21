@@ -5,7 +5,7 @@ import Notes from './pages/notes/Notes';
 import NewNote from './pages/notes/NewNote';
 import EditNote from './pages/notes/EditNote';
 import NotFound from './pages/NotFound';
-import StudyGroups from './pages/StudyGroups';
+import StudyGroups from './pages/studygroups/StudyGroups';
 import Subjects from './pages/subject/Subjects';
 import EnrollSubject from "./pages/subject/EnrollSubject";
 import Colegi from "./pages/colegi/Colegi";
@@ -39,7 +39,6 @@ function App() {
 
   return (
     <>
-
       <div id="logoContainer">
         <img id="penIcon" src={penIcon} alt="Pen icon" />
         <h4 id="numeAplicatie">StudyNotes</h4>
@@ -64,21 +63,14 @@ function App() {
         <Route path="/notes/new" element={isAuthenticated ? <NewNote user={user}/> : <Home></Home>}></Route>
         <Route path="/notes/:noteId" element={isAuthenticated ? <EditNote user={user}/> : <Home></Home>}></Route>
 
-        {/* id care poate fi folosit -> edit */}
-        {/* asta e var 1 - route params; 
-        (var 2 - outlet si context) 
-        var 3 - parameters cu state? idk vezi la notes*/}
-        {/* putem trimite cate routes parameters vrem */}
-
-
-        <Route path="/studygroups" element={isAuthenticated ? <StudyGroups /> : <Home></Home>}></Route>
-
+        <Route path="/studygroups" element={isAuthenticated ? <StudyGroups user={user}/> : <Home></Home>}></Route>
 
         <Route path="/subjects" element={isAuthenticated ? <Subjects user={user}/> : <Home></Home>}></Route>
         <Route path="/subjects/enroll" element={isAuthenticated ? <EnrollSubject user={user}/> : <Home></Home>}></Route>
-        
 
         <Route path="/colegi" element={isAuthenticated ? <Colegi user={user}/> : <Home/>}></Route>
+
+        <Route path="/studygroups" element={isAuthenticated ? <StudyGroups user={user}/> : <Home/>}></Route>
 
 
         <Route path="*" element={<NotFound></NotFound>}></Route>

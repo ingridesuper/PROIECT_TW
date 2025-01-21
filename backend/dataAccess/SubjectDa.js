@@ -1,5 +1,4 @@
 import Subject from "../entities/Subject.js";
-import UserSubject from "../entities/UserSubject.js";
 import User from "../entities/User.js";
 import LikeOp from "./Operators.js"
 import {getUserSubjectsByUser} from "./UserSubjectDa.js"

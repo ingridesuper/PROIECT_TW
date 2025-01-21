@@ -40,5 +40,4 @@ userStudyGroupRouter.route("/userStudyGroup/:id").delete(async (req, res) => {
 userStudyGroupRouter.route("/userStudyGroupFilter").get(async (req, res)=>{
     return res.json(await getUserStudyGroupWithFilterAndPagination(req.query)); 
 })
-
 export default userStudyGroupRouter;

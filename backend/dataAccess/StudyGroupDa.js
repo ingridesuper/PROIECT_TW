@@ -1,5 +1,6 @@
 import StudyGroup from "../entities/StudyGroup.js";
 import LikeOp from "./Operators.js"
+import User from "../entities/User.js";
 
 
 async function getStudyGroups(){
@@ -58,6 +59,13 @@ async function getStudyGroupWithFilterAndPagination(filter){
       });
 }
 
+//study groups of user
+async function getStudyGroupsWhichUserIsPartOf(userId){
+    const user=await User.findByPk(userId)
+    const studyGroups = await user.getStudyGroups()
+    return Array.isArray(studyGroups) ? studyGroups : [studyGroups] //vreau sa il intorc mereu ca array
+}
+
 export {
-    getStudyGroups, getStudyGroupById, createStudyGroup, updateStudyGroup, deleteStudyGroup, getStudyGroupWithFilterAndPagination
+    getStudyGroups, getStudyGroupById, createStudyGroup, updateStudyGroup, deleteStudyGroup, getStudyGroupWithFilterAndPagination, getStudyGroupsWhichUserIsPartOf
 }
