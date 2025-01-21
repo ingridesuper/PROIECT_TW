@@ -7,7 +7,7 @@ export default function NewNote({ user }) {
     const [content, setContent] = useState(''); 
     const [tagId, setTagId] = useState('');
     const [subjects, setSubjects] = useState([]);
-    const [selectedSubject, setSelectedSubject] = useState('');
+    const [selectedSubject, setSelectedSubject] = useState(''); //id-ul
     const [userSubject, setUserSubject] = useState('');
 
     useEffect(() => {
@@ -98,7 +98,7 @@ export default function NewNote({ user }) {
                 />
 
                 <div className="form-group">
-                    <label htmlFor="content">Write your note in Markdown:</label>
+                    <label htmlFor="content">Notează în Markdown:</label>
                     <br></br>
                     {/* Editor Markdown */}
                     <MDEditor

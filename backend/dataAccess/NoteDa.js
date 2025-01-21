@@ -3,6 +3,7 @@ import User from "../entities/User.js"
 import LikeOp from "./Operators.js"
 import { getUserSubjectsByUser, getUserSubjectByUserAndSubject } from "../dataAccess/UserSubjectDa.js";
 import UserSubject from "../entities/UserSubject.js";
+import { getSubjectById } from "./SubjectDa.js";
 
 //all notes
 async function getNotes() {
@@ -100,6 +101,18 @@ async function getNotesByUserSubjectId(userId,  subjectId) {
 
 }
 
+//user subject of note
+async function getUserSubjectByNote(noteId){
+    const note=await getNoteById(noteId);
+    return await note.getUserSubject(); //din fct github
+}
+
+//get subject of note
+async function getSubjectOfNote(noteId) {
+    const userSubject=await getUserSubjectByNote(noteId)
+    const subjectId=userSubject.SubjectId
+    return await getSubjectById(subjectId)
+}
 
 
-export { getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId, getNotesByUserSubjectId }
+export { getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId, getNotesByUserSubjectId, getUserSubjectByNote, getSubjectOfNote }

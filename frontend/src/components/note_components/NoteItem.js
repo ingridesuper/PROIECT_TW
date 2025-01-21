@@ -14,8 +14,7 @@ export default function NoteItem({ note, onDelete }) {
 
         if (response.ok) {
           console.log("Note deleted successfully");
-          // Apelăm funcția onDelete pentru a actualiza lista în componenta părinte
-          onDelete(note.id);
+          onDelete(note.id); //actualizare parinte
         } else {
           console.error("Error deleting note:", response.statusText);
         }

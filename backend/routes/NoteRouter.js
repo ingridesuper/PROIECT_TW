@@ -1,5 +1,5 @@
 import express from "express";
-import {getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId, getNotesByUserSubjectId} from "../dataAccess/NoteDa.js";
+import {getNotes, getNoteById, createNote, updateNote, deleteNote, getNotesWithFiltersAndPagination, getNotesByUserId, getNotesByUserSubjectId, getUserSubjectByNote, getSubjectOfNote} from "../dataAccess/NoteDa.js";
 
 let noteRouter=express.Router();
 
@@ -95,6 +95,16 @@ noteRouter.route("/note/user/:userId/subject/:subjectId").get(async (req, res) =
     }
 });
 
+//user subject entity of note
+noteRouter.route("/note/:noteId/getUserSubject").get(async (req, res)=>{
+    const userSubject=await getUserSubjectByNote(req.params.noteId);
+    return res.json(userSubject)
+})
 
+//subject entity of note
+noteRouter.route("/note/:noteId/getSubjectOfNote").get(async (req, res)=>{
+    const subject=await getSubjectOfNote(req.params.noteId)
+    return res.json(subject)
+})
 
 export default noteRouter;

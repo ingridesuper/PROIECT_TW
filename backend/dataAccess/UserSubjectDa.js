@@ -1,6 +1,7 @@
 import UserSubject from "../entities/UserSubject.js";
 import User from "../entities/User.js";
 import Subject from "../entities/Subject.js"; 
+import Note from "../entities/Note.js";
 
 //de schimbat si adaugat fct pt sub pe user sau user la subject la filter and pag
 
@@ -63,5 +64,7 @@ async function removeUserFromSubject(userSubjectId) {
     }
     await user.destroy();
 }
+
+
 
 export { getUserSubjects, addUserToSubject, getUserSubjectsByUser, getUsersBySubject, removeUserFromSubject, getUserSubject, getUserSubjectByUserAndSubject };
