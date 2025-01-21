@@ -21,7 +21,7 @@ export default function ColegiList({ user, colegi, onSendNote, setSelectedColeg 
                             onSendNote={() => {
                                 onSendNote(); 
                                 setSelectedColeg(coleg); 
-                            }} // Setăm colegul selectat
+                            }} // setam colegul selectat
                         />
                     ))
                 ) : (

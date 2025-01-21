@@ -1,6 +1,6 @@
 import React, { use, useEffect, useState } from "react";
 
-export default function StudyGroupItem({studyGroup }){
+export default function StudyGroupItem({studyGroup, onSendNote }){
     const [membri, setMembri]=useState([])
     
     useEffect(() => {
@@ -23,7 +23,7 @@ export default function StudyGroupItem({studyGroup }){
                     : "Fără membri"}
             </td>
 
-            { <td><button /*onClick={onSendNote}*/>Trimite o notita</button></td> }
+            { <td><button onClick={onSendNote}>Trimite o notita</button></td> }
         </tr>
     )
 }

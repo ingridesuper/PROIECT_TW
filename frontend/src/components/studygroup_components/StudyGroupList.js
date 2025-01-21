@@ -1,7 +1,7 @@
 import React from "react";
 import StudyGroupItem from "./StudyGroupItem";
 
-export default function StudyGroupList({studyGroups, user}){
+export default function StudyGroupList({studyGroups, user, setSelectedStudyGroup, onSendNote}){
     return (
         <table>
                     <thead>
@@ -18,6 +18,10 @@ export default function StudyGroupList({studyGroups, user}){
                                     studyGroup={studyGroup}
                                     user={user}
                                     key={studyGroup.id}
+                                    onSendNote={() => {
+                                        onSendNote(); 
+                                        setSelectedStudyGroup(studyGroup); 
+                                    }} 
                                 />
                             ))
                         ) : (
