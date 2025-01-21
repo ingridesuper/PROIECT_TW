@@ -4,35 +4,38 @@ import MDEditor from "@uiw/react-md-editor";
 import "./NewNote.css";
 
 export default function EditNote({ user }) {
-    const { noteId } = useParams(); // obtinere id din url
-    const navigate = useNavigate(); // redirectionare
+    const { noteId } = useParams(); // id din url
+    const navigate = useNavigate(); //pt redirectionare
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [tagId, setTagId] = useState('');
     const [subjects, setSubjects] = useState([]);
-    const [selectedSubject, setSelectedSubject] = useState('');
-    const [userSubject, setUserSubject] = useState('');
+    const [selectedSubject, setSelectedSubject] = useState(null); // materie selectata(obiect)
+    const [userSubject, setUserSubject] = useState(null); // user subject (pbiect)
 
-    //preluare nota și materii
+
     useEffect(() => {
-        const fetchNote = async () => {
+        const fetchNoteAndSubject = async () => {
             try {
-                const response = await fetch(`/api/note/${noteId}`);
-                const note = await response.json();
-
+                const noteResponse = await fetch(`/api/note/${noteId}`);
+                const note = await noteResponse.json();
                 setTitle(note.Title);
                 setContent(note.Content || '');
-                setSelectedSubject(note.SubjectId || ''); //asta nu exista in tabela mea
 
 
-                if (note.SubjectId) {
-                    const userSubjectResponse = await fetch(`/api/userSubject/user/${user.UserId}/subject/${note.SubjectId}`);
+                const subjectResponse = await fetch(`/api/note/${noteId}/getSubjectOfNote`);
+                const subject = await subjectResponse.json();
+                setSelectedSubject(subject); 
+
+
+                if (subject?.SubjectId) {
+                    const userSubjectResponse = await fetch(`/api/userSubject/user/${user.UserId}/subject/${subject.SubjectId}`);
                     const userSubjectData = await userSubjectResponse.json();
                     setUserSubject(userSubjectData);
                 }
             } catch (error) {
-                console.error("Error fetching note:", error);
+                console.error("Eroare la preluarea notei sau materiei:", error);
             }
         };
 
@@ -40,16 +43,14 @@ export default function EditNote({ user }) {
             try {
                 const response = await fetch(`/api/subject/${user.UserId}/subjects`);
                 const data = await response.json();
-                setSubjects(data);
+                setSubjects(data); 
             } catch (error) {
-                console.error("Error fetching subjects:", error);
+                console.error("Eroare la preluarea materiilor utilizatorului:", error);
             }
         };
 
-        fetchUserSubjects()
-
-        fetchNote()
-
+        fetchNoteAndSubject();
+        fetchUserSubjects();
     }, [noteId, user]);
 
     const handleTitleChange = (e) => {
@@ -62,19 +63,16 @@ export default function EditNote({ user }) {
 
     const handleUserSubjectChange = async (e) => {
         const subjectId = e.target.value;
-        setSelectedSubject(subjectId);
+
+        const selected = subjects.find(subject => subject.SubjectId === parseInt(subjectId, 10));
+        setSelectedSubject(selected);
 
         try {
             const response = await fetch(`/api/userSubject/user/${user.UserId}/subject/${subjectId}`);
             const data = await response.json();
-
-            if (data) {
-                setUserSubject(data);
-            } else {
-                console.error("Nu s-a găsit combinația User-Subject");
-            }
+            setUserSubject(data);
         } catch (error) {
-            console.error("Error fetching user subject:", error);
+            console.error("Eroare la actualizarea UserSubject:", error);
         }
     };
 
@@ -84,7 +82,7 @@ export default function EditNote({ user }) {
         const updatedNote = {
             Title: title,
             Content: content,
-            UserSubjectId: userSubject.UserSubjectId,
+            UserSubjectId: userSubject?.UserSubjectId, 
         };
 
         try {
@@ -97,13 +95,13 @@ export default function EditNote({ user }) {
             });
 
             if (response.ok) {
-                console.log("Note updated successfully!");
-                navigate(`../notes`); //redirectionare
+                console.log("Notița a fost actualizată cu succes!");
+                navigate(`../notes`);
             } else {
-                console.error("Error updating note:", response.statusText);
+                console.error("Eroare la actualizarea notiței:", response.statusText);
             }
         } catch (error) {
-            console.error("Error:", error);
+            console.error("Eroare:", error);
         }
     };
 
@@ -115,7 +113,7 @@ export default function EditNote({ user }) {
                     id="title"
                     value={title}
                     onChange={handleTitleChange}
-                    placeholder="Title"
+                    placeholder="Titlu"
                     required
                 />
 
@@ -133,7 +131,7 @@ export default function EditNote({ user }) {
                     <label htmlFor="subjectId">Selectează o materie:</label>
                     <select
                         id="subjectId"
-                        value={selectedSubject} // Folosește direct ID-ul
+                        value={selectedSubject?.SubjectId || ''} 
                         onChange={handleUserSubjectChange}
                         required
                     >
@@ -150,7 +148,7 @@ export default function EditNote({ user }) {
                     </select>
                 </div>
 
-                <button type="submit">Save Changes</button>
+                <button type="submit">Salvează modificările</button>
             </form>
         </div>
     );

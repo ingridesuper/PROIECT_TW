@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import MDEditor from "@uiw/react-md-editor"; // Importă editorul
-import "./NewNote.css"
+import { useNavigate } from "react-router-dom"; 
+import MDEditor from "@uiw/react-md-editor"; 
+import "./NewNote.css";
 
 export default function NewNote({ user }) {
     const [title, setTitle] = useState('');
-    const [content, setContent] = useState(''); 
+    const [content, setContent] = useState('');
     const [tagId, setTagId] = useState('');
     const [subjects, setSubjects] = useState([]);
-    const [selectedSubject, setSelectedSubject] = useState(''); //id-ul
+    const [selectedSubject, setSelectedSubject] = useState(''); // id-ul
     const [userSubject, setUserSubject] = useState('');
+    const navigate = useNavigate(); // Hook pentru navigare
 
     useEffect(() => {
         const fetchUserSubjects = async () => {
@@ -31,7 +33,7 @@ export default function NewNote({ user }) {
     };
 
     const handleContentChange = (value) => {
-        setContent(value || ""); 
+        setContent(value || "");
     };
 
     const handleUserSubjectChange = async (e) => {
@@ -57,7 +59,7 @@ export default function NewNote({ user }) {
 
         const newNote = {
             Title: title,
-            Content: content, 
+            Content: content,
             UserSubjectId: userSubject.UserSubjectId,
         };
 
@@ -72,11 +74,7 @@ export default function NewNote({ user }) {
 
             if (response.ok) {
                 console.log("Note created successfully!");
-                setTitle('');
-                setContent('');
-                setSelectedSubject('');
-                setUserSubject('');
-                setTagId('');
+                navigate('/notes');
             } else {
                 console.error("Error creating note:", response.statusText);
             }
@@ -99,11 +97,11 @@ export default function NewNote({ user }) {
 
                 <div className="form-group">
                     <label htmlFor="content">Notează în Markdown:</label>
-                    <br></br>
+                    <br />
                     {/* Editor Markdown */}
                     <MDEditor
                         id="content"
-                        value={content} 
+                        value={content}
                         onChange={handleContentChange}
                         preview="live"
                     />
