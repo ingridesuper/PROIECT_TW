@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NoteItem from "./NoteItem";
 
-export default function NoteList({ filters, notes }) {
+export default function NoteList({ filters, notes, user }) {
   const [filteredNotes, setFilteredNotes] = useState([]);
 
   // filtrare locala -> pt filters
@@ -29,7 +29,7 @@ export default function NoteList({ filters, notes }) {
     <div className="note-list">
       {Array.isArray(filteredNotes) && filteredNotes.length > 0 ? (
         filteredNotes.map((note) => (
-          <NoteItem key={note.id} note={note} onDelete={handleDeleteNote} />
+          <NoteItem key={note.id} note={note} onDelete={handleDeleteNote} user={user}/>
         ))
       ) : (
         <p>Nu există note disponibile.</p>

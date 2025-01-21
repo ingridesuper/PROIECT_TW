@@ -40,3 +40,16 @@
     font-size: 14px;
   }
 
+  #nuExistaAtasamenteParagraf{
+    color: gray;
+    font-size: 14px;
+  }
+
+  #linkAtasament{
+    font-size: 10px;
+  }
+
+  ul{
+    padding: 5px;
+    list-style:none;
+  }
