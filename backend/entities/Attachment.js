@@ -22,6 +22,11 @@ const Attachment = db.define("Attachment", {
     FileName: {
       type: Sequelize.STRING,
       allowNull: false
+    },
+
+    FileType: {
+      type: Sequelize.STRING, 
+      allowNull: false
     }
   });
   

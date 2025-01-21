@@ -43,4 +43,24 @@ async function getAttachmentsOfNote(noteId){
     return await note.getAttachments();
 }
 
-export {getAttachments, getAttachmentById, createAttachment, updateAttachment, deleteAttachment, getAttachmentsOfNote}
+
+
+//new:
+// Create and associate an attachment with a note
+async function createAttachmentForNote(noteId, file) {
+    const note = await Note.findByPk(noteId);
+    if (!note) {
+        throw new Error("Notița nu a fost găsită.");
+    }
+
+    const attachment = await Attachment.create({
+        NoteId: noteId,
+        FilePath: file.path,  // Calea fișierului încărcat
+        FileName: file.filename,  // Numele fișierului
+        FileType: file.mimetype,  // Tipul fișierului
+    });
+
+    return attachment;
+}
+
+export {getAttachments, getAttachmentById, createAttachment, updateAttachment, deleteAttachment, getAttachmentsOfNote, createAttachmentForNote}

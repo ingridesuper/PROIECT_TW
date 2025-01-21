@@ -10,6 +10,7 @@ export default function NewNote({ user }) {
     const [subjects, setSubjects] = useState([]);
     const [selectedSubject, setSelectedSubject] = useState(''); // id-ul
     const [userSubject, setUserSubject] = useState('');
+    const [file, setFile] = useState(null); // Pentru fișier
     const navigate = useNavigate(); // Hook pentru navigare
 
     useEffect(() => {
@@ -54,6 +55,10 @@ export default function NewNote({ user }) {
         }
     };
 
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]); // Salvăm fișierul selectat
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -64,7 +69,8 @@ export default function NewNote({ user }) {
         };
 
         try {
-            const response = await fetch('/api/note', {
+            // Creează nota
+            const noteResponse = await fetch('/api/note', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,12 +78,31 @@ export default function NewNote({ user }) {
                 body: JSON.stringify(newNote),
             });
 
-            if (response.ok) {
-                console.log("Note created successfully!");
-                navigate('/notes');
-            } else {
-                console.error("Error creating note:", response.statusText);
+            if (!noteResponse.ok) {
+                throw new Error("Eroare la crearea notei.");
             }
+
+            const createdNote = await noteResponse.json();
+
+            // Dacă există fișier, îl încărcăm
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const uploadResponse = await fetch(`/api/attachment/note/${createdNote.id}`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!uploadResponse.ok) {
+                    throw new Error("Eroare la încărcarea fișierului.");
+                }
+
+                console.log("Fișier încărcat cu succes!");
+            }
+
+            console.log("Nota creată cu succes!");
+            navigate('/notes');
         } catch (error) {
             console.error("Error:", error);
         }
@@ -126,6 +151,15 @@ export default function NewNote({ user }) {
                             <option value="" disabled>Nu sunteți înrolat la nicio materie</option>
                         )}
                     </select>
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="file">Adaugă atașament:</label>
+                    <input
+                        type="file"
+                        id="file"
+                        onChange={handleFileChange}
+                    />
                 </div>
 
                 <button type="submit">Save</button>

@@ -18,3 +18,6 @@ npm install mobx mobx-react
 npm install react-markdown
 npm install react-simplemde-editor
 npm i @uiw/react-md-editor
+
+//fisiere -> multer
+npm install multer
