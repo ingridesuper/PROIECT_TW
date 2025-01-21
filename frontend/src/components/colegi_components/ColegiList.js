@@ -29,6 +29,8 @@ export default function ColegiList({
                                 onSendNote(); 
                                 setSelectedColeg(coleg); 
                             }} // setam colegul selectat
+
+                            //daca selectam pt grup:
                             addingToStudyGroup={addingToStudyGroup}
                             onSelectColeg={onSelectColeg}
                         />

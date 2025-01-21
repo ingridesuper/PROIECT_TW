@@ -42,7 +42,7 @@ export default function StudyGroupCreateForm({ user }) {
         };
     
         try {
-            // creeaza grupul de studiu
+            // Creează grupul de studiu
             const response = await fetch(`/api/studyGroup`, {
                 method: "POST",
                 body: JSON.stringify(groupData),
@@ -55,7 +55,23 @@ export default function StudyGroupCreateForm({ user }) {
     
             const newGroup = await response.json();
     
-            // add membrii
+            // Adaugă utilizatorul curent în grup
+            const currentUserData = {
+                UserId: user.UserId,
+                StudyGroupId: newGroup.id,
+            };
+    
+            const currentUserResponse = await fetch(`/api/userStudyGroup`, {
+                method: "POST",
+                body: JSON.stringify(currentUserData),
+                headers: { "Content-Type": "application/json" },
+            });
+    
+            if (!currentUserResponse.ok) {
+                throw new Error("Eroare la adăugarea utilizatorului curent în grup.");
+            }
+    
+            // Adaugă colegii selectați în grup
             for (const coleg of selectedColegi) {
                 const memberData = {
                     UserId: coleg.UserId,
@@ -83,6 +99,7 @@ export default function StudyGroupCreateForm({ user }) {
             alert("A apărut o problemă: " + error.message);
         }
     };
+    
     
 
     return (
