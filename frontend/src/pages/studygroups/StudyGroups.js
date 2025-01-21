@@ -41,14 +41,14 @@ export default function StudyGroups({ user }) {
                 .then((membri) => {
                     // excludere utilizator curent
                     const membriExclusUser = membri.filter((membru) => membru.UserId !== user.UserId);
-
+        
                     // obt materia notitei
                     fetch(`/api/note/${notita.id}/getSubjectOfNote`)
                         .then((response) => response.json())
                         .then((materieNotita) => {
                             const colegiNeinscrisi = [];
                             const colegiEligibili = [];
-
+        
                             // verifica inscrierea fiecarui membru
                             Promise.all(
                                 membriExclusUser.map((membru) =>
@@ -72,12 +72,12 @@ export default function StudyGroups({ user }) {
                                             ", "
                                         )} nu sunt înrolați la materia ${materieNotita.SubjectName}. Doriți să trimiteți notița celorlalți membri?`
                                     );
-
+        
                                     if (!confirmSend) {
                                         return;
                                     }
                                 }
-
+        
                                 // trm notita catre colegii eligibili
                                 colegiEligibili.forEach((membru) => {
                                     fetch(`api/userSubject/user/${membru.UserId}/subject/${materieNotita.SubjectId}`)
@@ -88,17 +88,53 @@ export default function StudyGroups({ user }) {
                                                 Content: notita.Content,
                                                 UserSubjectId: userSubject.UserSubjectId,
                                             };
-
+        
                                             fetch(`/api/note`, {
                                                 method: "POST",
                                                 body: JSON.stringify(newNote),
                                                 headers: { "Content-Type": "application/json" },
-                                            }).catch((error) => {
-                                                console.error("Error sending notita:", error);
-                                            });
+                                            })
+                                                .then((noteResponse) => noteResponse.json())
+                                                .then((createdNote) => {
+                                                    
+                                                    // atasam atasamentele
+                                                    fetch(`/api/attachment/note/${notita.id}`)
+                                                        .then((response) => response.json())
+                                                        .then((attachments) => {
+    
+                                                            const attachmentPromises = attachments.map((attachment) => {
+                                                                const newAttachment = {
+                                                                    FileName: attachment.FileName,
+                                                                    FilePath: attachment.FilePath,
+                                                                    FileType: attachment.FileType,
+                                                                    NoteId: createdNote.id, 
+                                                                };
+    
+                                                                return fetch(`/api/attachment`, {
+                                                                    method: "POST",
+                                                                    body: JSON.stringify(newAttachment),
+                                                                    headers: { "Content-Type": "application/json" },
+                                                                });
+                                                            });
+    
+                                                            Promise.all(attachmentPromises)
+                                                                .then(() => {
+                                                                    console.log("Toate atașamentele au fost trimise.");
+                                                                })
+                                                                .catch((error) => {
+                                                                    console.error("Eroare la trimiterea atașamentelor:", error);
+                                                                });
+                                                        })
+                                                        .catch((error) => {
+                                                            console.error("Eroare la obținerea atașamentelor:", error);
+                                                        });
+                                                })
+                                                .catch((error) => {
+                                                    console.error("Error sending notita:", error);
+                                                });
                                         });
                                 });
-
+        
                                 alert("Notița a fost trimisă!");
                             });
                         });
@@ -106,7 +142,8 @@ export default function StudyGroups({ user }) {
                 .catch((error) => console.error("Error fetching study group members:", error));
         }
     };
-
+    
+    
 
     return (
         <div>
