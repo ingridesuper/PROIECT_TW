@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import {Link} from "react-router-dom";
+
 import StudyGroupList from "../../components/studygroup_components/StudyGroupList";
 import NotitePopup from "../../components/note_components/NotitePopup";
 
@@ -109,6 +111,11 @@ export default function StudyGroups({ user }) {
     return (
         <div>
             <h3>Grupurile tale de studiu:</h3>
+            
+            {/* link to create a new study group */}
+            <Link to="./new" user={user}> 
+                <button className="fab">+</button>
+            </Link>
 
             <StudyGroupList
                 studyGroups={studyGroupsOfUser}

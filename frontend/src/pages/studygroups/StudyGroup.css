@@ -1,0 +1,20 @@
+input {
+    background: transparent;
+    border: 1px solid #ccc;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+#studyGroupNameTxtInput{
+    width: 300px;
+    height: 30px;
+    font-size: 18px;
+}
+
+input::placeholder {
+    font-size: 18px;
+    color: rgb(88, 87, 87);
+  }

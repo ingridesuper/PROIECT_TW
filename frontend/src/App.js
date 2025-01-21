@@ -11,6 +11,7 @@ import EnrollSubject from "./pages/subject/EnrollSubject";
 import Colegi from "./pages/colegi/Colegi";
 import "./styles/styles.css"
 import penIcon from "./media/pen.svg"
+import StudyGroupCreateForm from "./pages/studygroups/StudyGroupCreateForm";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -63,7 +64,6 @@ function App() {
         <Route path="/notes/new" element={isAuthenticated ? <NewNote user={user}/> : <Home></Home>}></Route>
         <Route path="/notes/:noteId" element={isAuthenticated ? <EditNote user={user}/> : <Home></Home>}></Route>
 
-        <Route path="/studygroups" element={isAuthenticated ? <StudyGroups user={user}/> : <Home></Home>}></Route>
 
         <Route path="/subjects" element={isAuthenticated ? <Subjects user={user}/> : <Home></Home>}></Route>
         <Route path="/subjects/enroll" element={isAuthenticated ? <EnrollSubject user={user}/> : <Home></Home>}></Route>
@@ -71,7 +71,7 @@ function App() {
         <Route path="/colegi" element={isAuthenticated ? <Colegi user={user}/> : <Home/>}></Route>
 
         <Route path="/studygroups" element={isAuthenticated ? <StudyGroups user={user}/> : <Home/>}></Route>
-
+        <Route path="/studygroups/new" element={isAuthenticated ? <StudyGroupCreateForm user={user}/> : <Home/>}></Route>
 
         <Route path="*" element={<NotFound></NotFound>}></Route>
       </Routes>
