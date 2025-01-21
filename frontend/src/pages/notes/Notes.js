@@ -132,7 +132,7 @@ export default function Notes({ user }) {
 
         {/* spinner selectare materie */}
         <div className="spinner">
-          <label htmlFor="subjectId">După materie:</label>
+          <label id="labelDupaMaterie" htmlFor="subjectId">După materie:</label>
           <select
             id="subjectId"
             value={selectedSubject ? selectedSubject.SubjectId : null}

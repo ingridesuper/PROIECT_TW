@@ -5,5 +5,9 @@
 -> de adaugat editare atasamente cand apesi pe edit note
 
 -> vezi daca poti sa adaugi totusi mai multe atasamente
+
+
+done
+----------
 -> la partajare tb adaugat si atasamentul (adica intrare noua in tabel attachments). 
 si la studygroup, dar si la colegi
