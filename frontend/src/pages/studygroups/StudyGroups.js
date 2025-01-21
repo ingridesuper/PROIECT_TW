@@ -12,7 +12,7 @@ export default function StudyGroups({ user }) {
     const [isNotiteVisible, setNotiteVisible] = useState(false);
 
     useEffect(() => {
-        fetch(`api/studyGroup/user/${user.UserId}`)
+        fetch(`/api/studyGroup/user/${user.UserId}`)
             .then((r) => r.json())
             .then((data) => {
                 setStudyGroupsOfUser(data || []);

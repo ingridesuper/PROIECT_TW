@@ -2,13 +2,20 @@ import React from "react";
 import ColegItem from "./ColegItem";
 import "../component_styles/Coleg.css";
 
-export default function ColegiList({ user, colegi, onSendNote, setSelectedColeg }) {
+export default function ColegiList({ 
+    user, 
+    colegi, 
+    onSendNote, 
+    setSelectedColeg, 
+    addingToStudyGroup = false, 
+    onSelectColeg 
+}) {
     return (
         <table>
             <thead>
                 <tr>
                     <th>Email</th>
-                    <th>Trimite</th>
+                    <th>{addingToStudyGroup ? "Selectează" : "Trimite"}</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,6 +29,8 @@ export default function ColegiList({ user, colegi, onSendNote, setSelectedColeg 
                                 onSendNote(); 
                                 setSelectedColeg(coleg); 
                             }} // setam colegul selectat
+                            addingToStudyGroup={addingToStudyGroup}
+                            onSelectColeg={onSelectColeg}
                         />
                     ))
                 ) : (

@@ -1,11 +1,14 @@
 input {
     background: transparent;
     border: 1px solid #ccc;
+    margin-bottom: 20px;
 }
 
 form {
     display: flex;
     flex-direction: column;
+    padding: opx;
+    margin: 0px;
 }
 
 #studyGroupNameTxtInput{
@@ -17,4 +20,17 @@ form {
 input::placeholder {
     font-size: 18px;
     color: rgb(88, 87, 87);
-  }
+}
+
+h3, h4{
+    margin-bottom: 30px;
+}
+
+#colegiSelectatiTitlu{
+    margin-top: 40px;
+}
+
+button{
+    margin-top: 20px;
+    margin-left: 0px;
+}

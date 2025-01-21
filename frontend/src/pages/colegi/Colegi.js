@@ -52,7 +52,7 @@ export default function Colegi({ user }) {
                                 if (isInSameSubject) {
 
                                     //postam notita
-                                    fetch(`api/userSubject/user/${selectedColeg.UserId}/subject/${materieNotita.SubjectId}`)
+                                    fetch(`/api/userSubject/user/${selectedColeg.UserId}/subject/${materieNotita.SubjectId}`)
                                         .then((userSubjectResponse) => userSubjectResponse.json())
                                         .then((userSubject) => {
                                             const newNote = {
