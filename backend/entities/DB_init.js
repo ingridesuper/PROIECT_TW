@@ -8,6 +8,7 @@ import Tag from "./Tag.js";
 import db from "../dbConfig.js";
 import StudyGroup from "./StudyGroup.js";
 import UserStudyGroup from "./UserStudyGroup.js";
+import Attachment from "./Attachment.js";
 
 
 env.config();
@@ -45,6 +46,9 @@ function FK_Config(){
 
     User.belongsToMany(StudyGroup, {through: "UserStudyGroup", as:"StudyGroups", foreignKey: "UserId"});
     StudyGroup.belongsToMany(User, {through: "UserStudyGroup", as:"Users", foreignKey: "StudyGroupId"});
+
+    Note.hasMany(Attachment, {as: "Attachments", foreignKey:"NoteId"})
+    Attachment.belongsTo(Note, {foreignKey: "NoteId"})
 }
 
 //pt adaugare tabele noi
