@@ -51,7 +51,7 @@ function FK_Config(){
     Attachment.belongsTo(Note, {foreignKey: "NoteId"})
 }
 
-//pt adaugare tabele noi
+// pt adaugare tabele noi
 // async function DB_Init() {
 //     Create_DB();
 //     FK_Config();

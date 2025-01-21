@@ -2,7 +2,7 @@ import db from "../dbConfig.js";
 import {DataTypes, Sequelize} from "sequelize";
 
 const Attachment = db.define("Attachment", {
-    NoteId: {
+    id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,

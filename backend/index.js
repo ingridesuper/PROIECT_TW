@@ -9,6 +9,7 @@ import noteRouter from './routes/NoteRouter.js';
 import tagRouter from './routes/TagRouter.js';
 import studyGroupRouter from './routes/StudyGroupRouter.js';
 import userStudyGroupRouter from './routes/UserStudyGroupRouter.js';
+import attachmentRouter from './routes/AttachmentRouter.js';
 
 import passport from 'passport';
 import session from 'express-session';
@@ -104,6 +105,7 @@ app.get('/api/auth/status', (req, res) => {
 // app.use("/api", isLoggedIn, tagRouter);
 // app.use("/api", isLoggedIn, studyGroupRouter);
 // app.use("/api", isLoggedIn, userStudyGroupRouter);
+// app.use("/api", isLoggedIn, attachmentRouter);
 
 app.use("/api", createDbRouter);
 app.use("/api", userRouter);
@@ -113,6 +115,7 @@ app.use("/api", noteRouter);
 app.use("/api", tagRouter);
 app.use("/api", studyGroupRouter);
 app.use("/api", userStudyGroupRouter);
+app.use("/api", attachmentRouter);
 
 let port = process.env.PORT || 8001;
 app.listen(port);
