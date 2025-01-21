@@ -131,7 +131,7 @@ export default function StudyGroupCreateForm({ user }) {
                 ))}
             </ul>
 
-            <button onClick={handleCreateGroup}>Creează grup</button>
+            <button onClick={handleCreateGroup} id="createGroupBtn">Creează grup</button>
         </div>
     );
 }
