@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import ColegiList from "../../components/colegi_components/ColegiList";
 import NotitePopup from "../../components/note_components/NotitePopup";
+import "../../components/component_styles/Coleg.css"
 
 export default function Colegi({ user }) {
     const [colegi, setColegi] = useState([]);
     const [isNotiteVisible, setNotiteVisible] = useState(false);
     const [userNotite, setUserNotite] = useState([]);
     const [selectedColeg, setSelectedColeg] = useState(null);
+    const [emailFilter, setEmailFilter] = useState("");
+
 
     useEffect(() => {
         if (user && user.UserId) {
@@ -73,7 +76,7 @@ export default function Colegi({ user }) {
                                                 });
                                         })
                                 } else {
-                                    alert(`Colegul nu este înrolat la materia: ${materieNotita.SubjectName}`);
+                                    alert(`${selectedColeg.UserEmail} nu este înrolat la materia ${materieNotita.SubjectName}`);
                                 }
                             }
                         })
@@ -81,16 +84,37 @@ export default function Colegi({ user }) {
         }
     };
 
+    const handleEmailFilterChange = (e) => {
+        setEmailFilter(e.target.value.toLowerCase()); 
+    };
+
+    const filteredColegi = colegi.filter((coleg) =>
+        coleg.UserEmail.toLowerCase().includes(emailFilter)
+    );
+
     return (
         <div>
             <h3>Colegi</h3>
+
+            {/* filter mail */}
+            <div className="filter-email">
+                <input
+                    type="text"
+                    placeholder="Caută după email..."
+                    value={emailFilter}
+                    onChange={handleEmailFilterChange}
+                />
+            </div>
+
+            {/* lista colegi */}
             <ColegiList
                 user={user}
-                colegi={colegi}
+                colegi={filteredColegi}
                 onSendNote={toggleNotitePopup}
                 setSelectedColeg={setSelectedColeg}
             />
 
+            {/* popup notite */}
             {isNotiteVisible && (
                 <NotitePopup
                     notite={userNotite}

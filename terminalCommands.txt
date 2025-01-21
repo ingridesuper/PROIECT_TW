@@ -4,7 +4,8 @@ https://www.youtube.com/watch?v=Q0a0594tOrc
 //4 dependencies:
 npm install --save express express-session passport passport-google-oauth2
 
-//erori
+//fixing errors
+//nu se deschidea mysql:
 //mysql sudo chown -R $(whoami) $(brew --prefix)/*
 nu uita sa dai start: brew services start mysql
 https://stackoverflow.com/questions/68975769/brew-services-cant-start-service-get-bootstrap-failed-5-input-output-error 

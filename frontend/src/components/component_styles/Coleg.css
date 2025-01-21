@@ -36,3 +36,18 @@ button:hover{
     background-color: navy;
     color: white;
 }
+
+.filter-email {
+    margin-bottom: 20px;
+}
+
+.filter-email input {
+    background: transparent;
+    font-size: 16px;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
