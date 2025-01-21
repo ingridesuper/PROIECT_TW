@@ -1,5 +1,5 @@
 import express from "express";
-import {getStudyGroups, getStudyGroupById, createStudyGroup, updateStudyGroup, deleteStudyGroup, getStudyGroupWithFilterAndPagination, getStudyGroupsWhichUserIsPartOf
+import {getStudyGroups, getStudyGroupById, createStudyGroup, updateStudyGroup, deleteStudyGroup, getStudyGroupWithFilterAndPagination, getStudyGroupsWhichUserIsPartOf, getMembersOfStudyGroup
 } from "../dataAccess/StudyGroupDa.js";
 
 let studyGroupRouter=express.Router();
@@ -55,8 +55,15 @@ studyGroupRouter.route("/studyGroupFilter").get(async (req, res)=>{
     return res.json(await getStudyGroupWithFilterAndPagination(req.query)); 
 })
 
+//study groups a user is part of
 studyGroupRouter.route("/studyGroup/user/:userId").get(async (req, res)=>{
     return res.json(await getStudyGroupsWhichUserIsPartOf(req.params.userId))
 })
+
+//members of a study group
+studyGroupRouter.route("/studyGroup/:studyGroupId/members").get(async (req, res)=>{
+    return res.json(await getMembersOfStudyGroup(req.params.studyGroupId))
+})
+
 
 export default studyGroupRouter;

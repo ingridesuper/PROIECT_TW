@@ -66,6 +66,13 @@ async function getStudyGroupsWhichUserIsPartOf(userId){
     return Array.isArray(studyGroups) ? studyGroups : [studyGroups] //vreau sa il intorc mereu ca array
 }
 
+//get members of a study group
+async function getMembersOfStudyGroup(studyGroupId){
+    const studyGroup=await getStudyGroupById(studyGroupId)
+    const members=await studyGroup.getUsers();
+    return members
+}
+
 export {
-    getStudyGroups, getStudyGroupById, createStudyGroup, updateStudyGroup, deleteStudyGroup, getStudyGroupWithFilterAndPagination, getStudyGroupsWhichUserIsPartOf
+    getStudyGroups, getStudyGroupById, createStudyGroup, updateStudyGroup, deleteStudyGroup, getStudyGroupWithFilterAndPagination, getStudyGroupsWhichUserIsPartOf, getMembersOfStudyGroup
 }

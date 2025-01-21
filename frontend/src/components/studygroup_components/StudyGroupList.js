@@ -7,7 +7,7 @@ export default function StudyGroupList({studyGroups, user}){
                     <thead>
                         <tr>
                             <th>Nume</th>
-                            <th>Colegi</th>
+                            <th>Membri</th>
                             <th>Trimite</th>
                         </tr>
                     </thead>
