@@ -36,17 +36,20 @@ export default function Colegi({ user }) {
             fetch(`/api/note/${notita.id}/getSubjectOfNote`)
                 .then((response) => response.json())
                 .then((materieNotita) => {
-                    // obținem materiile în care este înrolat colegul
-                    console.log(`Materie notitta is: ${materieNotita.SubjectId}`);
+
+                    // obtinem materiile in care este inrolat colegul
                     fetch(`/api/subject/${selectedColeg.UserId}/subjects`)
                         .then((response) => response.json())
                         .then((subiecteColeg) => {
 
                             if (Array.isArray(subiecteColeg)) {
+
+                                //vedem daca colegul e inrolat in materia notitiei
                                 const isInSameSubject = subiecteColeg.some((materie) => materie.SubjectId === materieNotita.SubjectId);
                                 if (isInSameSubject) {
-                                    console.log(`${selectedColeg.UserId}`)
-                                    fetch(`api//userSubject/user/${selectedColeg.UserId}/subject/${materieNotita.SubjectId}`)
+
+                                    //postam notita
+                                    fetch(`api/userSubject/user/${selectedColeg.UserId}/subject/${materieNotita.SubjectId}`)
                                         .then((userSubjectResponse) => userSubjectResponse.json())
                                         .then((userSubject) => {
                                             const newNote = {
@@ -69,23 +72,12 @@ export default function Colegi({ user }) {
                                                     console.error("Error sending notita:", error);
                                                 });
                                         })
-                                        .catch((error) => {
-                                            console.error("Error fetching user subject:", error);
-                                        });
                                 } else {
                                     alert(`Colegul nu este înrolat la materia: ${materieNotita.SubjectName}`);
                                 }
-                            } else {
-                                console.error("A apărut o eroare: subiectele colegului nu sunt într-un array.");
                             }
                         })
-                        .catch((error) => {
-                            console.error("Error fetching subjects of coleg:", error);
-                        });
                 })
-                .catch((error) => {
-                    console.error("Error fetching subject of note:", error);
-                });
         }
     };
 
