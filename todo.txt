@@ -1,3 +1,9 @@
-de schimbat api vezi
-ca acum nu ia bine -> vezi conexiunea intre ele
-maine: start working in notelist.js
+-> e cam ciudat ca la atasamente e asa in folde rpublic
+-> si ca tb luat serverul de back (ce fac cand ii dau deploy?)
+
+-> de adaugat optiune sa numesti cum vrei attachmentul -> de ce acum se redenumeste el cu un sir de litere?
+-> de adaugat editare atasamente cand apesi pe edit note
+
+-> vezi daca poti sa adaugi totusi mai multe atasamente
+-> la partajare tb adaugat si atasamentul (adica intrare noua in tabel attachments). 
+si la studygroup, dar si la colegi

@@ -33,60 +33,88 @@ export default function Colegi({ user }) {
         setNotiteVisible(!isNotiteVisible);
     };
 
+    const handleEmailFilterChange = (e) => {
+        setEmailFilter(e.target.value.toLowerCase()); 
+    };
+
+  
     const onTrimiteNotita = (notita) => {
         if (selectedColeg) {
-            // obtinem subiectul notitei
+            // sub notita
             fetch(`/api/note/${notita.id}/getSubjectOfNote`)
                 .then((response) => response.json())
                 .then((materieNotita) => {
-
-                    // obtinem materiile in care este inrolat colegul
+                    // mat la care e inrolat colegul
                     fetch(`/api/subject/${selectedColeg.UserId}/subjects`)
                         .then((response) => response.json())
                         .then((subiecteColeg) => {
-
                             if (Array.isArray(subiecteColeg)) {
-
-                                //vedem daca colegul e inrolat in materia notitiei
-                                const isInSameSubject = subiecteColeg.some((materie) => materie.SubjectId === materieNotita.SubjectId);
+                                // check if  colegul este inrolat la materia notitei
+                                const isInSameSubject = subiecteColeg.some(
+                                    (materie) => materie.SubjectId === materieNotita.SubjectId
+                                );
+    
                                 if (isInSameSubject) {
-
-                                    //postam notita
+                                    // obt subjectid
                                     fetch(`/api/userSubject/user/${selectedColeg.UserId}/subject/${materieNotita.SubjectId}`)
-                                        .then((userSubjectResponse) => userSubjectResponse.json())
+                                        .then((response) => response.json())
                                         .then((userSubject) => {
+                                            // creare notita
                                             const newNote = {
                                                 Title: notita.Title,
                                                 Content: notita.Content,
                                                 UserSubjectId: userSubject.UserSubjectId,
                                             };
-
+    
                                             fetch(`/api/note`, {
                                                 method: "POST",
                                                 body: JSON.stringify(newNote),
                                                 headers: { "Content-Type": "application/json" },
                                             })
-                                                .then((r) => r.json())
-                                                .then((data) => {
-                                                    alert("Notița a fost trimisă cu succes!");
-                                                    setNotiteVisible(false);
+                                                .then((response) => response.json())
+                                                .then((createdNote) => {
+
+                                                    // asociere atasamente
+                                                    fetch(`/api/attachment/note/${notita.id}`)
+                                                        .then((response) => response.json())
+                                                        .then((attachments) => {
+
+                                                            const attachmentPromises = attachments.map((attachment) => {
+                                                                const newAttachment = {
+                                                                    FileName: attachment.FileName,
+                                                                    FilePath: attachment.FilePath,
+                                                                    FileType: attachment.FileType,
+                                                                    NoteId: createdNote.id, 
+                                                                };
+    
+                                                                return fetch(`/api/attachment`, {
+                                                                    method: "POST",
+                                                                    body: JSON.stringify(newAttachment),
+                                                                    headers: { "Content-Type": "application/json" },
+                                                                });
+                                                            });
+    
+                                                            Promise.all(attachmentPromises)
+                                                                .then(() => {
+                                                                    alert("Notița a fost trimisă cu succes!");
+                                                                    setNotiteVisible(false);
+                                                                })
+                                                        })
                                                 })
                                                 .catch((error) => {
-                                                    console.error("Error sending notita:", error);
+                                                    console.error("Error creating notita:", error);
+                                                    alert("Nu s-a putut trimite notița.");
                                                 });
-                                        })
+                                        });
                                 } else {
                                     alert(`${selectedColeg.UserEmail} nu este înrolat la materia ${materieNotita.SubjectName}`);
                                 }
                             }
-                        })
-                })
+                        });
+                });
         }
     };
-
-    const handleEmailFilterChange = (e) => {
-        setEmailFilter(e.target.value.toLowerCase()); 
-    };
+    
 
     const filteredColegi = colegi.filter((coleg) =>
         coleg.UserEmail.toLowerCase().includes(emailFilter)
