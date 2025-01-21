@@ -1,0 +1,38 @@
+table {
+    width: 100%; 
+    border-collapse: collapse; 
+    margin: 20px 0; 
+    font-size: 16px; 
+    text-align: left; 
+}
+
+thead th {
+    padding: 10px; 
+    font-weight: bold; 
+}
+
+tbody tr:hover {
+    background-color: #ddd; 
+}
+
+td, th {
+    padding: 12px 15px; 
+    border: 1px solid darkgray; 
+}
+
+tbody td {
+    color: #333; 
+}
+
+button {
+    border: 1px solid navy;
+    border-radius: 20px;
+    font-weight: bold;
+    width:auto;
+    font-size: 12px;
+}
+
+button:hover{
+    background-color: navy;
+    color: white;
+}

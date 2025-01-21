@@ -1,5 +1,5 @@
 import express from "express";
-import {getUsers, getUserById, createUser, getUserWithFilterAndPagination} from "../dataAccess/UserDa.js";
+import {getUsers, getUserById, createUser, getUserWithFilterAndPagination, getColegiOfUser} from "../dataAccess/UserDa.js";
 
 let userRouter=express.Router();
 
@@ -20,6 +20,10 @@ userRouter.route("/user").get(async (req, res)=>{
 
 userRouter.route("/user/:id").get(async (req, res)=>{
     return res.json(await getUserById(req.params.id));
+})
+
+userRouter.route("/user/:userId/colegi").get(async (req, res)=>{
+    return res.json(await getColegiOfUser(req.params.userId));
 })
 
 //filtrat si paginat

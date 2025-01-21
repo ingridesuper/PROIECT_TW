@@ -1,0 +1,36 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    width: 600px;
+    min-height: 500px;
+    max-height: 800px;
+    overflow-y: auto;
+}
+
+.popup-content h3 {
+    margin-bottom: 10px;
+}
+
+.popup-content button {
+    margin-top: 40px;
+}
+
+li{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: larger;
+}

@@ -8,6 +8,7 @@ import NotFound from './pages/NotFound';
 import StudyGroups from './pages/StudyGroups';
 import Subjects from './pages/subject/Subjects';
 import EnrollSubject from "./pages/subject/EnrollSubject";
+import Colegi from "./pages/colegi/Colegi";
 import "./styles/styles.css"
 import penIcon from "./media/pen.svg"
 
@@ -51,7 +52,7 @@ function App() {
             <li><Link to="/notes">notițe</Link></li>
             <li><Link to="/studygroups">study groups</Link></li>
             <li><Link to="/subjects">materii</Link></li>
-            <li><Link to="/lalala">colegi</Link></li>
+            <li><Link to="/colegi">colegi</Link></li>
           </ul>
         </nav>
       </div>
@@ -75,6 +76,10 @@ function App() {
 
         <Route path="/subjects" element={isAuthenticated ? <Subjects user={user}/> : <Home></Home>}></Route>
         <Route path="/subjects/enroll" element={isAuthenticated ? <EnrollSubject user={user}/> : <Home></Home>}></Route>
+        
+
+        <Route path="/colegi" element={isAuthenticated ? <Colegi user={user}/> : <Home/>}></Route>
+
 
         <Route path="*" element={<NotFound></NotFound>}></Route>
       </Routes>
