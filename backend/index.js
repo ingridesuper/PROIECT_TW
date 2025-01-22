@@ -56,6 +56,17 @@ app.get('/auth/google', passport.authenticate('google', {
     scope: ['email']
 }));
 
+// Endpoint de logout pe backend
+app.get('/auth/logout', (req, res) => {
+  req.logout((err) => {
+      if (err) {
+          return res.status(500).send('Logout failed');
+      }
+      res.status(200).send({ message: 'Logged out successfully' });
+  });
+});
+
+
 //callback autentificare
 app.get('/google/callback', 
     passport.authenticate('google', {

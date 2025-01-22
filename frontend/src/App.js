@@ -38,6 +38,23 @@ function App() {
       });
   }, []);
 
+  const handleLogout = () => {
+    fetch('/auth/logout', {
+      method: 'GET',
+      credentials: 'include',
+    })
+      .then((response) => {
+        if (response.ok) {
+          setIsAuthenticated(false);
+          setUser(null);
+          console.log('Deconectat cu succes!');
+        } else {
+          console.error('Eroare la deconectare:', response.statusText);
+        }
+      })
+      .catch((error) => console.error('Eroare:', error));
+  };
+
   return (
     <>
       <div id="logoContainer">
@@ -59,7 +76,7 @@ function App() {
 
 
       <Routes>
-        <Route path="/" element={<Home isAuthenticated={isAuthenticated} />}></Route>
+        <Route path="/" element={<Home isAuthenticated={isAuthenticated} onLogout={handleLogout}/>}></Route>
         <Route path="/notes" element={ isAuthenticated ? <Notes user={user}/> : <Home></Home>} />
         <Route path="/notes/new" element={isAuthenticated ? <NewNote user={user}/> : <Home></Home>}></Route>
         <Route path="/notes/:noteId" element={isAuthenticated ? <EditNote user={user}/> : <Home></Home>}></Route>
