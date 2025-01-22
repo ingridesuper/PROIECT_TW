@@ -35,12 +35,12 @@ DB_Init();
 
 //configurare sesiune si pasaport
 app.use(session({
-    secret: 'cats', // Replace with a secure secret
-    resave: false, // Prevents session from being saved on every request
-    saveUninitialized: false, // Saves only if a session is modified
+    secret: 'cats', 
+    resave: false, 
+    saveUninitialized: false, 
     cookie: {
       secure: false, // Set true if using HTTPS
-      maxAge: 1000 * 60*5, // 5 minute session expiration
+      maxAge: 1000 * 60*5, // 5 minute sessions
     }
   }));
 
@@ -74,7 +74,7 @@ app.get('/protected', (req, res) => {
 
 // Pagina de eroare
 app.get('/auth/failure', (req, res) => {
-    res.send('Autentificarea a eșuat.');
+    res.send('Autentificarea a eșuat. Contul trebuie să fie instituțional.');
 });
 
 // Middleware pentru protejarea rutei

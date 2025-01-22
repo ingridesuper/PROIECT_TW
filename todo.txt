@@ -2,12 +2,15 @@
 -> si ca tb luat serverul de back (ce fac cand ii dau deploy?)
 
 -> de adaugat optiune sa numesti cum vrei attachmentul -> de ce acum se redenumeste el cu un sir de litere?
--> de adaugat editare atasamente cand apesi pe edit note
+-> de adaugat editare atasamente cand apesi pe edit note!!!
 
--> vezi daca poti sa adaugi totusi mai multe atasamente
 
+--- altele de facut ----
+-> buton de logout
 
 done
 ----------
 -> la partajare tb adaugat si atasamentul (adica intrare noua in tabel attachments). 
 si la studygroup, dar si la colegi
+
+-> vezi daca poti sa adaugi totusi mai multe atasamente

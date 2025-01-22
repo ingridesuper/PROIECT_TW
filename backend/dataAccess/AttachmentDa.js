@@ -44,9 +44,7 @@ async function getAttachmentsOfNote(noteId){
 }
 
 
-
-//new:
-// Create and associate an attachment with a note
+// create and associate an attachment with a note
 async function createAttachmentForNote(noteId, file) {
     const note = await Note.findByPk(noteId);
     if (!note) {
@@ -55,9 +53,9 @@ async function createAttachmentForNote(noteId, file) {
 
     const attachment = await Attachment.create({
         NoteId: noteId,
-        FilePath: file.path,  // Calea fișierului încărcat
-        FileName: file.filename,  // Numele fișierului
-        FileType: file.mimetype,  // Tipul fișierului
+        FilePath: file.path,  
+        FileName: file.filename,  
+        FileType: file.mimetype,  
     });
 
     return attachment;

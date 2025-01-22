@@ -10,7 +10,7 @@ export default function NewNote({ user }) {
     const [subjects, setSubjects] = useState([]);
     const [selectedSubject, setSelectedSubject] = useState(''); // id-ul
     const [userSubject, setUserSubject] = useState('');
-    const [file, setFile] = useState(null); // Pentru fișier
+    const [files, setFiles] = useState([]); // Modificat pentru fișiere multiple
     const navigate = useNavigate(); // Hook pentru navigare
 
     useEffect(() => {
@@ -56,7 +56,7 @@ export default function NewNote({ user }) {
     };
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]); // Salvăm fișierul selectat
+        setFiles(Array.from(e.target.files)); // Salvăm toate fișierele selectate
     };
 
     const handleSubmit = async (e) => {
@@ -84,10 +84,12 @@ export default function NewNote({ user }) {
 
             const createdNote = await noteResponse.json();
 
-            // Dacă există fișier, îl încărcăm
-            if (file) {
+            // Dacă există fișiere, le încărcăm
+            if (files.length > 0) {
                 const formData = new FormData();
-                formData.append('file', file);
+                files.forEach((file) => {
+                    formData.append('files', file);
+                });
 
                 const uploadResponse = await fetch(`/api/attachment/note/${createdNote.id}`, {
                     method: 'POST',
@@ -95,10 +97,10 @@ export default function NewNote({ user }) {
                 });
 
                 if (!uploadResponse.ok) {
-                    throw new Error("Eroare la încărcarea fișierului.");
+                    throw new Error("Eroare la încărcarea fișierelor.");
                 }
 
-                console.log("Fișier încărcat cu succes!");
+                console.log("Fișiere încărcate cu succes!");
             }
 
             console.log("Nota creată cu succes!");
@@ -123,7 +125,6 @@ export default function NewNote({ user }) {
                 <div className="form-group">
                     <label htmlFor="content">Notează în Markdown:</label>
                     <br />
-                    {/* Editor Markdown */}
                     <MDEditor
                         id="content"
                         value={content}
@@ -154,9 +155,10 @@ export default function NewNote({ user }) {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="file">Adaugă atașament:</label>
+                    <label htmlFor="file">Adaugă atașamente:</label>
                     <input
                         type="file"
+                        multiple
                         id="file"
                         onChange={handleFileChange}
                     />
