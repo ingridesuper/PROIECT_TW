@@ -17,7 +17,7 @@ form {
 }
 
 button {
-    width: 10%;
+    width : 10%;
     padding: 10px 20px;
     border: none;
     margin: 1px solid gray;
@@ -37,3 +37,12 @@ button:hover {
     font-family: monospace; 
     font-size: 16px;        
 }
+
+.btnSubmitNote{
+    width : 10%;
+}
+
+.adaugaAtasamenteLabel, .selecteazaMaterieLabel{
+    margin-right: 10px;
+}
+

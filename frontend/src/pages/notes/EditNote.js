@@ -162,7 +162,7 @@ export default function EditNote({ user }) {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="subjectId">Selectează o materie:</label>
+                    <label className="selecteazaMaterieLabel" htmlFor="subjectId">Selectează o materie:</label>
                     <select
                         id="subjectId"
                         value={selectedSubject?.SubjectId || ''}
@@ -193,7 +193,7 @@ export default function EditNote({ user }) {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="files">Adaugă atașamente:</label>
+                    <label className="adaugaAtasamenteLabel" htmlFor="files">Adaugă atașamente:</label>
                     <input
                         type="file"
                         multiple
@@ -202,7 +202,7 @@ export default function EditNote({ user }) {
                     />
                 </div>
 
-                <button type="submit">Salvează modificările</button>
+                <button className="btnSubmitNote" type="submit">Salvează modificările</button>
             </form>
         </div>
     );

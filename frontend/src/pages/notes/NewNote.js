@@ -134,7 +134,7 @@ export default function NewNote({ user }) {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="subjectId">Selectează o materie:</label>
+                    <label className="selecteazaMaterieLabel" htmlFor="subjectId">Selectează o materie:</label>
                     <select
                         id="subjectId"
                         value={selectedSubject}
@@ -155,7 +155,7 @@ export default function NewNote({ user }) {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="file">Adaugă atașamente:</label>
+                    <label className="adaugaAtasamenteLabel" htmlFor="file">Adaugă atașamente:</label>
                     <input
                         type="file"
                         multiple
@@ -164,7 +164,7 @@ export default function NewNote({ user }) {
                     />
                 </div>
 
-                <button type="submit">Save</button>
+                <button className="btnSubmitNote" type="submit">Save</button>
             </form>
         </div>
     );

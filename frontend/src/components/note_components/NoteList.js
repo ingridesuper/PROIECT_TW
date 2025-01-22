@@ -32,7 +32,7 @@ export default function NoteList({ filters, notes, user }) {
           <NoteItem key={note.id} note={note} onDelete={handleDeleteNote} user={user}/>
         ))
       ) : (
-        <p>Nu există note disponibile.</p>
+        <p>Nu există notițe disponibile.</p>
       )}
     </div>
   );
