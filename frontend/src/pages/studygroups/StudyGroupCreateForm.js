@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import ColegiList from "../../components/colegi_components/ColegiList";
+import { useNavigate } from "react-router-dom"; 
 import "./StudyGroup.css";
 
 export default function StudyGroupCreateForm({ user }) {
     const [colegi, setColegi] = useState([]);
     const [numeGrup, setNumeGrup] = useState("");
     const [selectedColegi, setSelectedColegi] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (user && user.UserId) {
@@ -92,6 +94,7 @@ export default function StudyGroupCreateForm({ user }) {
             }
     
             alert("Grupul a fost creat cu succes și membrii au fost adăugați!");
+            navigate("/studygroups")
             setNumeGrup("");
             setSelectedColegi([]);
         } catch (error) {

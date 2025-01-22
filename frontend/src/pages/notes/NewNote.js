@@ -10,7 +10,7 @@ export default function NewNote({ user }) {
     const [subjects, setSubjects] = useState([]);
     const [selectedSubject, setSelectedSubject] = useState(''); // id-ul
     const [userSubject, setUserSubject] = useState('');
-    const [files, setFiles] = useState([]); // Modificat pentru fișiere multiple
+    const [files, setFiles] = useState([]); // Modificat pentru fisiere multiple
     const navigate = useNavigate(); // Hook pentru navigare
 
     useEffect(() => {
