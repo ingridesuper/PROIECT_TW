@@ -5,15 +5,16 @@ import "./NewNote.css";
 
 export default function EditNote({ user }) {
     const { noteId } = useParams(); // id din url
-    const navigate = useNavigate(); //pt redirectionare
+    const navigate = useNavigate(); // pt redirectionare
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [tagId, setTagId] = useState('');
     const [subjects, setSubjects] = useState([]);
-    const [selectedSubject, setSelectedSubject] = useState(null); // materie selectata(obiect)
-    const [userSubject, setUserSubject] = useState(null); // user subject (pbiect)
-
+    const [selectedSubject, setSelectedSubject] = useState(null); // materie selectata (obiect)
+    const [userSubject, setUserSubject] = useState(null); // user subject (obiect)
+    const [attachments, setAttachments] = useState([]); // atașamentele existente
+    const [newFiles, setNewFiles] = useState([]); // atașamente noi
 
     useEffect(() => {
         const fetchNoteAndSubject = async () => {
@@ -23,19 +24,21 @@ export default function EditNote({ user }) {
                 setTitle(note.Title);
                 setContent(note.Content || '');
 
-
                 const subjectResponse = await fetch(`/api/note/${noteId}/getSubjectOfNote`);
                 const subject = await subjectResponse.json();
-                setSelectedSubject(subject); 
-
+                setSelectedSubject(subject);
 
                 if (subject?.SubjectId) {
                     const userSubjectResponse = await fetch(`/api/userSubject/user/${user.UserId}/subject/${subject.SubjectId}`);
                     const userSubjectData = await userSubjectResponse.json();
                     setUserSubject(userSubjectData);
                 }
+
+                const attachmentsResponse = await fetch(`/api/attachment/note/${noteId}`);
+                const existingAttachments = await attachmentsResponse.json();
+                setAttachments(existingAttachments);
             } catch (error) {
-                console.error("Eroare la preluarea notei sau materiei:", error);
+                console.error("Eroare la preluarea notei sau materiilor:", error);
             }
         };
 
@@ -43,7 +46,7 @@ export default function EditNote({ user }) {
             try {
                 const response = await fetch(`/api/subject/${user.UserId}/subjects`);
                 const data = await response.json();
-                setSubjects(data); 
+                setSubjects(data);
             } catch (error) {
                 console.error("Eroare la preluarea materiilor utilizatorului:", error);
             }
@@ -76,13 +79,26 @@ export default function EditNote({ user }) {
         }
     };
 
+    const handleFileChange = (e) => {
+        setNewFiles(Array.from(e.target.files)); 
+    };
+
+    const handleDeleteAttachment = async (attachmentId) => {
+        try {
+            await fetch(`/api/attachment/${attachmentId}`, { method: 'DELETE' });
+            setAttachments(attachments.filter(attachment => attachment.id !== attachmentId));
+        } catch (error) {
+            console.error("Eroare la ștergerea atașamentului:", error);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const updatedNote = {
             Title: title,
             Content: content,
-            UserSubjectId: userSubject?.UserSubjectId, 
+            UserSubjectId: userSubject?.UserSubjectId,
         };
 
         try {
@@ -94,12 +110,30 @@ export default function EditNote({ user }) {
                 body: JSON.stringify(updatedNote),
             });
 
-            if (response.ok) {
-                console.log("Notița a fost actualizată cu succes!");
-                navigate(`../notes`);
-            } else {
-                console.error("Eroare la actualizarea notiței:", response.statusText);
+            if (!response.ok) {
+                throw new Error("Eroare la actualizarea notei.");
             }
+
+            if (newFiles.length > 0) {
+                const formData = new FormData();
+                newFiles.forEach(file => formData.append('files', file));
+
+                const uploadResponse = await fetch(`/api/attachment/note/${noteId}`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!uploadResponse.ok) {
+                    throw new Error("Eroare la încărcarea atașamentelor.");
+                }
+
+                const uploadedAttachments = await uploadResponse.json();
+                setAttachments([...attachments, ...uploadedAttachments.attachments]);
+                setNewFiles([]);
+            }
+
+            console.log("Nota a fost actualizată cu succes!");
+            navigate(`../notes`);
         } catch (error) {
             console.error("Eroare:", error);
         }
@@ -131,21 +165,41 @@ export default function EditNote({ user }) {
                     <label htmlFor="subjectId">Selectează o materie:</label>
                     <select
                         id="subjectId"
-                        value={selectedSubject?.SubjectId || ''} 
+                        value={selectedSubject?.SubjectId || ''}
                         onChange={handleUserSubjectChange}
                         required
                     >
                         <option value="">Alege o materie</option>
-                        {subjects.length > 0 ? (
-                            subjects.map((subject) => (
-                                <option key={subject.SubjectId} value={subject.SubjectId}>
-                                    {subject.SubjectName}
-                                </option>
-                            ))
-                        ) : (
-                            <option value="" disabled>Nu sunteți înrolat la nicio materie</option>
-                        )}
+                        {subjects.map((subject) => (
+                            <option key={subject.SubjectId} value={subject.SubjectId}>
+                                {subject.SubjectName}
+                            </option>
+                        ))}
                     </select>
+                </div>
+
+                <div className="form-group">
+                    <label>Fișiere atașate:</label>
+                    <ul>
+                        {attachments.map(attachment => (
+                            <li key={attachment.id}>
+                                <a href={`/uploads/${attachment.filename}`} target="_blank" rel="noopener noreferrer">
+                                    {attachment.FileName}
+                                </a>
+                                <button type="button" onClick={() => handleDeleteAttachment(attachment.id)}>Șterge</button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="files">Adaugă atașamente:</label>
+                    <input
+                        type="file"
+                        multiple
+                        id="files"
+                        onChange={handleFileChange}
+                    />
                 </div>
 
                 <button type="submit">Salvează modificările</button>

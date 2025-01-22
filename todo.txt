@@ -1,7 +1,6 @@
 -> e cam ciudat ca la atasamente e asa in folde rpublic
 -> si ca tb luat serverul de back (ce fac cand ii dau deploy?)
 
--> de adaugat optiune sa numesti cum vrei attachmentul -> de ce acum se redenumeste el cu un sir de litere?
 -> de adaugat editare atasamente cand apesi pe edit note!!!
 
 
@@ -14,3 +13,5 @@ done
 si la studygroup, dar si la colegi
 
 -> vezi daca poti sa adaugi totusi mai multe atasamente
+
+-> de adaugat optiune sa numesti cum vrei attachmentul -> de ce acum se redenumeste el cu un sir de litere?
