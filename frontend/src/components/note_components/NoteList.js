@@ -10,9 +10,7 @@ export default function NoteList({ filters, notes, user }) {
       const filtered = notes.filter((note) => {
         return (
           (filters.title === "" || note.Title.toLowerCase().includes(filters.title.toLowerCase())) &&
-          (filters.content === "" || note.Content.toLowerCase().includes(filters.content.toLowerCase())) &&
-          //de implementat
-          (filters.tag === "" || (note.TagName && note.TagName.toLowerCase().includes(filters.tag.toLowerCase())))
+          (filters.content === "" || note.Content.toLowerCase().includes(filters.content.toLowerCase()))
         );
       });
       setFilteredNotes(filtered);

@@ -17,7 +17,7 @@ function Home({ isAuthenticated }) {
     <div>
       <h1>Bun venit!</h1>
       {isAuthenticated ? (
-        <div>Esti autentificat!</div>
+        <div>Ești autentificat!</div>
       ) : (
         <div>
           <h2>Te rugăm să te autentifici</h2>

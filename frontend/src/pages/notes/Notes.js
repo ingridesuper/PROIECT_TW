@@ -8,9 +8,7 @@ export default function Notes({ user }) {
   // filtere selectate
   const [filters, setFilters] = useState({
     title: "",
-    content: "",
-    tag: ""
-  });
+    content: ""  });
 
   // materiile la care este înrolat utilizatorul
   const [subjects, setSubjects] = useState([]);
@@ -120,13 +118,6 @@ export default function Notes({ user }) {
           name="content"
           placeholder="Caută după conținut..."
           value={filters.content}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="text"
-          name="tag"
-          placeholder="Caută după tag..."
-          value={filters.tag}
           onChange={handleFilterChange}
         />
 
